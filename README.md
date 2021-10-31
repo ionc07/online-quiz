@@ -1,37 +1,9 @@
-## Welcome to GitHub Pages
+# Online quiz
 
-You can use the [editor on GitHub](https://github.com/ionc07/online-quiz/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## Introduction
+This application is intended to help mentors/teachers and students with online knowledge verification. It will provide the possibility to create different kinds of tests for many purposes like surveys, polls, tests, etc. The student will attend a test created by his mentor to pass it, he will be able to view his score and the teacher's evaluation with explanations if needed. Being online, the students will be able to chat with their mentors within a  test to get clarifications.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Why online quiz platform?
+In nowadays, remote learning became a more necessary condition. The digitalization process is growing constantly and the education domain also has its own benefits from it. Within this platform, teachers will be able to assess the progress of their students on different topics. During tests events, students will be in touch with their mentors through a chat system meant to help students and teachers contact each other more easily regarding the current test.
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ionc07/online-quiz/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+See the [Wiki](https://github.com/ionc07/online-quiz/wiki) page.
