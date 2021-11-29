@@ -3,11 +3,23 @@
   <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%thread] %-5level %logger{50} - %msg%n"/>
   <property name="APP_LOG_ROOT" value="D:/temp/logs/online-quiz"/>
 
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  <appender name="APPLICATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${APP_LOG_ROOT}/application/application-%d{yyyy-MM-dd}.%i.log</file>
     <encoder>
       <pattern>${LOG_PATTERN}</pattern>
     </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${APP_LOG_ROOT}/application/archived/application-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <!--Max Size of file to start Archive -->
+        <maxFileSize>10MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+
+      <!-- Days till log history to keep -->
+      <maxHistory>3</maxHistory>
+    </rollingPolicy>
   </appender>
+
   <appender name="REQUESTS" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${APP_LOG_ROOT}/request/requests-%d{yyyy-MM-dd}.%i.log</file>
     <encoder>
@@ -27,18 +39,18 @@
   </appender>
 
   <appender name="CONSOLE"
-            class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
-      <Pattern>
-        %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
-      </Pattern>
-    </layout>
+            class="ch.qos.logback.core.ConsoleAppender" level="DEBUG">
+    <encoder>
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
   </appender>
   <logger name="com.online.quiz.filter.RequestResponseLoggingFilter" level="DEBUG">
     <appender-ref ref="REQUESTS"/>
   </logger>
-  <root>
-    <appender-ref ref="CONSOLE"/>
+
+  <root name="com.online.quiz">
+    <appender-ref ref="APPLICATION" levle="DEBUG"/>
+    <appender-ref ref="CONSOLE" levle="DEBUG"/>
   </root>
 
 </configuration>
