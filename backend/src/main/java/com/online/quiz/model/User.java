@@ -1,32 +1,28 @@
 package com.online.quiz.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @Table(name = "users")
-public class User extends AbstractEntity {
+public class User extends AbstractEntity implements UserDetails {
 
-  @NotNull(message = "First name is mandatory")
-  @Size(min = 2, message = "First name must not be less than 2 characters")
   private String firstName;
 
-  @NotNull(message = "Last name is mandatory")
-  @Size(min = 2, message = "Last name must not be less than 2 characters")
   private String lastName;
 
-  @NotNull(message = "Email is mandatory")
-  @Email(message = "Email must be well-formed")
   private String email;
 
-  @NotNull(message = "Password is mandatory")
-  @Size(min = 8, message = "Password must be greater than 7 characters!")
   private String password;
 
   private Date createdAt;
@@ -93,5 +89,42 @@ public class User extends AbstractEntity {
 
   public void setResetCode(String resetCode) {
     this.resetCode = resetCode;
+  }
+
+  @PrePersist
+  public void setCreatedAt() {
+    this.createdAt = new Date();
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    Collection<GrantedAuthority> roles = new ArrayList<>();
+    roles.add(new SimpleGrantedAuthority(role.getName()));
+    return roles;
+  }
+
+  @Override
+  public String getUsername() {
+    return this.getEmail();
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 }

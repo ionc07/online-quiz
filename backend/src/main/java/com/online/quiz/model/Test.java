@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.List;
 
 @Entity
 public class Test extends AbstractEntity {
@@ -14,15 +16,15 @@ public class Test extends AbstractEntity {
 
   private String description;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
 
   @OneToOne(cascade = CascadeType.ALL)
   private TestSettings settings;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  private Role role;
+  @OneToMany(mappedBy = "test")
+  private List<Question> questions;
 
   public Test() {
   }
@@ -59,11 +61,11 @@ public class Test extends AbstractEntity {
     this.settings = settings;
   }
 
-  public Role getRole() {
-    return role;
+  public List<Question> getQuestions() {
+    return questions;
   }
 
-  public void setRole(Role role) {
-    this.role = role;
+  public void setQuestions(List<Question> questions) {
+    this.questions = questions;
   }
 }

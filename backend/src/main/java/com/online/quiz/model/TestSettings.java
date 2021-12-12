@@ -10,8 +10,6 @@ public class TestSettings extends AbstractEntity {
 
   private Date availableTo;
 
-  private String description;
-
   private Boolean chatEnabled;
 
   private Integer timeLimit;
@@ -35,14 +33,6 @@ public class TestSettings extends AbstractEntity {
 
   public void setAvailableTo(Date availableTo) {
     this.availableTo = availableTo;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public Boolean isChatEnabled() {

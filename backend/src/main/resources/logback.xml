@@ -4,7 +4,7 @@
   <property name="APP_LOG_ROOT" value="D:/temp/logs/online-quiz"/>
 
   <appender name="APPLICATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${APP_LOG_ROOT}/application/application-%d{yyyy-MM-dd}.%i.log</file>
+    <file>${APP_LOG_ROOT}/application/application.log</file>
     <encoder>
       <pattern>${LOG_PATTERN}</pattern>
     </encoder>
@@ -16,12 +16,12 @@
       </timeBasedFileNamingAndTriggeringPolicy>
 
       <!-- Days till log history to keep -->
-      <maxHistory>3</maxHistory>
+      <maxHistory>1</maxHistory>
     </rollingPolicy>
   </appender>
 
   <appender name="REQUESTS" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${APP_LOG_ROOT}/request/requests-%d{yyyy-MM-dd}.%i.log</file>
+    <file>${APP_LOG_ROOT}/request/requests.log</file>
     <encoder>
       <pattern>${LOG_PATTERN}</pattern>
     </encoder>
@@ -33,24 +33,25 @@
       </timeBasedFileNamingAndTriggeringPolicy>
 
       <!-- Days till log history to keep -->
-      <maxHistory>3</maxHistory>
+      <maxHistory>1</maxHistory>
     </rollingPolicy>
 
   </appender>
 
   <appender name="CONSOLE"
-            class="ch.qos.logback.core.ConsoleAppender" level="DEBUG">
+            class="ch.qos.logback.core.ConsoleAppender" level="INFO">
     <encoder>
       <pattern>${LOG_PATTERN}</pattern>
     </encoder>
   </appender>
-  <logger name="com.online.quiz.filter.RequestResponseLoggingFilter" level="DEBUG">
+
+  <logger name="com.online.quiz.filter.RequestResponseLoggingFilter" level="INFO">
     <appender-ref ref="REQUESTS"/>
   </logger>
 
   <root name="com.online.quiz">
-    <appender-ref ref="APPLICATION" levle="DEBUG"/>
-    <appender-ref ref="CONSOLE" levle="DEBUG"/>
+    <appender-ref ref="APPLICATION" level="INFO"/>
+    <appender-ref ref="CONSOLE" level="INFO"/>
   </root>
 
 </configuration>

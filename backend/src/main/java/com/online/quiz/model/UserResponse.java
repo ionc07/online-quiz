@@ -13,6 +13,10 @@ public class UserResponse extends AbstractEntity {
   @OneToOne(cascade = CascadeType.ALL)
   private Answer answer;
 
+  private String value;
+
+  private Integer score;
+
   public UserResponse() {
   }
 
@@ -30,5 +34,21 @@ public class UserResponse extends AbstractEntity {
 
   public void setAnswer(Answer answer) {
     this.answer = answer;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  public Integer getScore() {
+    return score;
+  }
+
+  public void setScore(Integer score) {
+    this.score = score;
   }
 }

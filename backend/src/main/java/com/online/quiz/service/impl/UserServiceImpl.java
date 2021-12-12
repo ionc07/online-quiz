@@ -10,8 +10,8 @@ import com.online.quiz.projection.UserDetails;
 import com.online.quiz.repository.RoleRepository;
 import com.online.quiz.repository.UserRepository;
 import com.online.quiz.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,29 +21,16 @@ import java.util.Date;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-  @Autowired
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
-  @Autowired
-  private RoleRepository roleRepository;
+  private final RoleRepository roleRepository;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
-  @Autowired
-  private EmailService emailService;
-
-  @Override
-  public void save(User user) {
-
-    user.setRole(roleRepository.findByName("ROLE_user"));
-    user.setCreatedAt(new Date());
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-    userRepository.save(user);
-    emailService.sendMessage(user.getEmail(), "Welcome", "Hello and welcome on board! :)");
-  }
+  private final EmailService emailService;
 
   @Override
   public void verify(String email) {
@@ -51,44 +38,37 @@ public class UserServiceImpl implements UserService {
     new Random().nextBytes(array);
     String generatedCode = RandomStringUtils.randomAlphabetic(6).toUpperCase();
 
-    User userToRecover = userRepository.findByEmail(email);
-    if (userToRecover != null) {
-      userToRecover.setResetCode(passwordEncoder.encode(generatedCode));
-      userRepository.save(userToRecover);
-      emailService.sendMessage(userToRecover.getEmail(), "Reset password", "Code: " + generatedCode);
-    } else {
-      throw new UserNotFoundException("Such user with given email doesn't exist!");
-    }
+    User userToRecover = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UserNotFoundException("Such user with given email doesn't exist!"));
+
+    userToRecover.setResetCode(passwordEncoder.encode(generatedCode));
+    userRepository.save(userToRecover);
+    emailService.sendMessage(userToRecover.getEmail(), "Reset password", "Code: " + generatedCode);
+
   }
 
   @Override
   public void resetPassword(UserResetPasswordDTO userResetPasswordDTO) {
-    User userToUpdate = userRepository.findByEmail(userResetPasswordDTO.getEmail());
+    User userToUpdate = userRepository.findByEmail(userResetPasswordDTO.getEmail())
+            .orElseThrow(() -> new UserNotFoundException("Such user with given email doesn't exist!"));
 
-    if (userToUpdate != null) {
-      if (passwordEncoder.matches(userResetPasswordDTO.getResetCode(), userToUpdate.getResetCode())) {
-        userToUpdate.setPassword(passwordEncoder.encode(userResetPasswordDTO.getNewPassword()));
-        userToUpdate.setResetCode(null);
-        userRepository.save(userToUpdate);
-      } else {
-        throw new WrongResetCodeException("Wrong reset code was provided!");
-      }
+    if (passwordEncoder.matches(userResetPasswordDTO.getResetCode(), userToUpdate.getResetCode())) {
+      userToUpdate.setPassword(passwordEncoder.encode(userResetPasswordDTO.getNewPassword()));
+      userToUpdate.setResetCode(null);
+      userRepository.save(userToUpdate);
     } else {
-      throw new UserNotFoundException("Such user with given email doesn't exist!");
+      throw new WrongResetCodeException("Wrong reset code was provided!");
     }
   }
 
   @Override
   public void update(UserUpdateDTO userUpdateDTO) {
-    User user = userRepository.findByEmail(userUpdateDTO.getEmail());
+    User user = userRepository.findByEmail(userUpdateDTO.getEmail())
+            .orElseThrow(() -> new UserNotFoundException("Such user with given email doesn't exist!"));
 
-    if (user == null) {
-      throw new UserNotFoundException("Such user doesn't exist!");
-    } else {
-      user.setFirstName(userUpdateDTO.getFirstName());
-      user.setLastName(userUpdateDTO.getLastName());
-      user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
-    }
+    user.setFirstName(userUpdateDTO.getFirstName());
+    user.setLastName(userUpdateDTO.getLastName());
+    user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
   }
 
   @Override

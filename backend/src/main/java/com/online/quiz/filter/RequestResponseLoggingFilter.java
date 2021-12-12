@@ -1,7 +1,6 @@
 package com.online.quiz.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -84,31 +83,31 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
   }
 
   private static void logRequestBody(ContentCachingRequestWrapper request, String prefix) {
-    val content = request.getContentAsByteArray();
+    byte[] content = request.getContentAsByteArray();
     if (content.length > 0) {
       logContent(content, request.getContentType(), request.getCharacterEncoding(), prefix);
     }
   }
 
   private static void logResponse(ContentCachingResponseWrapper response, String prefix) {
-    val status = response.getStatus();
+    int status = response.getStatus();
     log.info("{} {} {}", prefix, status, HttpStatus.valueOf(status).getReasonPhrase());
     response.getHeaderNames().forEach(headerName ->
                                               response.getHeaders(headerName).forEach(headerValue ->
                                                                                               log.info("{} {}: {}", prefix, headerName, headerValue)));
     log.info("{}", prefix);
-    val content = response.getContentAsByteArray();
+    byte[] content = response.getContentAsByteArray();
     if (content.length > 0) {
       logContent(content, response.getContentType(), response.getCharacterEncoding(), prefix);
     }
   }
 
   private static void logContent(byte[] content, String contentType, String contentEncoding, String prefix) {
-    val mediaType = MediaType.valueOf(contentType);
-    val visible = VISIBLE_TYPES.stream().anyMatch(visibleType -> visibleType.includes(mediaType));
+    MediaType mediaType = MediaType.valueOf(contentType);
+    boolean visible = VISIBLE_TYPES.stream().anyMatch(visibleType -> visibleType.includes(mediaType));
     if (visible) {
       try {
-        val contentString = new String(content, contentEncoding);
+        String contentString = new String(content, contentEncoding);
         Stream.of(contentString.split("\r\n|\r|\n")).forEach(line -> log.info("{} {}", prefix, line));
       } catch (UnsupportedEncodingException e) {
         log.info("{} [{} bytes content]", prefix, content.length);

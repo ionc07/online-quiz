@@ -6,8 +6,6 @@ import com.online.quiz.model.User;
 import com.online.quiz.projection.UserDetails;
 
 public interface UserService {
-  void save(User user);
-
   void verify(String email);
 
   void resetPassword(UserResetPasswordDTO userResetPasswordDTO);

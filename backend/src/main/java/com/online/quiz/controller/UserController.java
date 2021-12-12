@@ -2,10 +2,9 @@ package com.online.quiz.controller;
 
 import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.dto.UserUpdateDTO;
-import com.online.quiz.model.User;
 import com.online.quiz.projection.UserDetails;
 import com.online.quiz.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,23 +21,16 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-  @Autowired
-  private UserService userService;
+  private final UserService userService;
 
   @GetMapping("/current")
   public ResponseEntity<?> getCurrentUser() {
     UserDetails userDetails = userService.getCurrentUser();
 
     return new ResponseEntity<>(userDetails, HttpStatus.OK);
-  }
-
-  @PostMapping
-  public ResponseEntity<?> save(@Valid @RequestBody User user) {
-    userService.save(user);
-
-    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @PostMapping("/password/verification")

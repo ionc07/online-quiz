@@ -32,7 +32,6 @@ create table test_settings
     id             bigserial not null,
     available_from timestamp,
     available_to   timestamp,
-    description    varchar(1024),
     chat_enabled   boolean default false,
     time_limit     integer,
     max_attempts   integer default 1,
@@ -54,10 +53,11 @@ create table question
 (
     id                  bigserial not null,
     test_id             bigserial not null,
+    value               text      not null,
     sequence            integer   not null,
     time_limit          integer,
     wait_for_time_limit boolean default false,
-    score               integer default 0,
+    score               integer,
     primary key (id)
 );
 
@@ -73,7 +73,9 @@ create table answer
     id             bigserial not null,
     answer_type_id integer   not null,
     question_id    bigint    not null,
+    value          text      not null,
     correct        boolean,
+    score          integer,
     primary key (id)
 );
 
@@ -82,6 +84,8 @@ create table user_response
     id        bigserial not null,
     user_id   bigint    not null,
     answer_id bigint    not null,
+    value     text,
+    score     integer,
     primary key (id)
 );
 
