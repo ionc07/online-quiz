@@ -4,6 +4,7 @@ import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.dto.UserUpdateDTO;
 import com.online.quiz.projection.UserDetails;
 import com.online.quiz.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class UserController {
   private final UserService userService;
 
   @GetMapping("/current")
-  @ApiOperation("Get the user that is currently logged in the system")
+  @Operation(summary = "Get the user that is currently logged in the system")
   public ResponseEntity<UserDetails> getCurrentUser() {
     UserDetails userDetails = userService.getCurrentUser();
 
@@ -35,21 +36,21 @@ public class UserController {
   }
 
   @PostMapping("/password/verification")
-  @ApiOperation("Send a reset code to user email")
+  @Operation(summary = "Send a reset code to user email")
   public ResponseEntity<?> verifyUser(@RequestParam String email) {
     userService.verify(email);
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @PostMapping("/password/reset")
-  @ApiOperation("Changes the user password")
+  @Operation(summary = "Changes the user password")
   public ResponseEntity<?> resetPassword(@RequestBody UserResetPasswordDTO userResetPasswordDTO) {
     userService.resetPassword(userResetPasswordDTO);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @PutMapping
-  @ApiOperation("Updates user details")
+  @Operation(summary = "Updates user details")
   public ResponseEntity<?> update(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
     userService.update(userUpdateDTO);
 
@@ -57,7 +58,7 @@ public class UserController {
   }
 
   @DeleteMapping("/{id}")
-  @ApiOperation("Deletes a user by id")
+  @Operation(summary = "Deletes a user by id")
   public ResponseEntity<?> delete(@PathVariable Long id) {
     userService.delete(id);
 

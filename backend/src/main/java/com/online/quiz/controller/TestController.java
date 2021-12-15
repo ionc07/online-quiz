@@ -2,6 +2,7 @@ package com.online.quiz.controller;
 
 import com.online.quiz.model.Test;
 import com.online.quiz.service.TestService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,14 @@ public class TestController {
   private final TestService testService;
 
   @PostMapping
-  @ApiOperation("Creates the quiz")
+  @Operation(summary = "Creates the quiz")
   public ResponseEntity<?> create(@RequestBody Test test) {
     testService.create(test);
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @GetMapping
-  @ApiOperation("Returns all tests")
+  @Operation(summary = "Returns all tests")
   public ResponseEntity<?> getAll() {
     return new ResponseEntity<>(testService.getAllTests(), HttpStatus.OK);
   }
