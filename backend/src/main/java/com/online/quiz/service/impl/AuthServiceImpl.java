@@ -47,6 +47,8 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public void register(CreateUserRequest createUserRequest) {
+    // TODO
+    // user mapper
     User user = new User();
     user.setFirstName(createUserRequest.getFirstName());
     user.setLastName(createUserRequest.getLastName());
@@ -54,6 +56,6 @@ public class AuthServiceImpl implements AuthService {
     user.setRole(roleRepository.findByName("ROLE_user"));
     user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
     userRepository.save(user);
-    emailService.sendMessage(createUserRequest.getEmail(), "Welcome", "Hello and welcome to online quiz platform!s");
+    emailService.sendMessage(createUserRequest.getEmail(), "Welcome", "Hello and welcome to online quiz platform!");
   }
 }

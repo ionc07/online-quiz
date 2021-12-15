@@ -10,7 +10,7 @@ import java.util.Date;
 public class ChatMessage extends AbstractEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "answer_type_id")
+  @JoinColumn(name = "user_test_id")
   private UserTest userTest;
 
   private String message;

@@ -19,12 +19,14 @@ public class TestController {
   private final TestService testService;
 
   @PostMapping
+  @ApiOperation("Creates the quiz")
   public ResponseEntity<?> create(@RequestBody Test test) {
     testService.create(test);
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @GetMapping
+  @ApiOperation("Returns all tests")
   public ResponseEntity<?> getAll() {
     return new ResponseEntity<>(testService.getAllTests(), HttpStatus.OK);
   }

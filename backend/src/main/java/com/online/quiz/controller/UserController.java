@@ -27,25 +27,29 @@ public class UserController {
   private final UserService userService;
 
   @GetMapping("/current")
-  public ResponseEntity<?> getCurrentUser() {
+  @ApiOperation("Get the user that is currently logged in the system")
+  public ResponseEntity<UserDetails> getCurrentUser() {
     UserDetails userDetails = userService.getCurrentUser();
 
     return new ResponseEntity<>(userDetails, HttpStatus.OK);
   }
 
   @PostMapping("/password/verification")
+  @ApiOperation("Send a reset code to user email")
   public ResponseEntity<?> verifyUser(@RequestParam String email) {
     userService.verify(email);
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @PostMapping("/password/reset")
+  @ApiOperation("Changes the user password")
   public ResponseEntity<?> resetPassword(@RequestBody UserResetPasswordDTO userResetPasswordDTO) {
     userService.resetPassword(userResetPasswordDTO);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @PutMapping
+  @ApiOperation("Updates user details")
   public ResponseEntity<?> update(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
     userService.update(userUpdateDTO);
 
@@ -53,6 +57,7 @@ public class UserController {
   }
 
   @DeleteMapping("/{id}")
+  @ApiOperation("Deletes a user by id")
   public ResponseEntity<?> delete(@PathVariable Long id) {
     userService.delete(id);
 
