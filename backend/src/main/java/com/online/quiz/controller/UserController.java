@@ -2,10 +2,15 @@ package com.online.quiz.controller;
 
 import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.dto.UserUpdateDTO;
+import com.online.quiz.model.User;
 import com.online.quiz.projection.UserDetails;
 import com.online.quiz.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +31,12 @@ import javax.validation.Valid;
 public class UserController {
 
   private final UserService userService;
+
+  @GetMapping
+  @Operation(summary = "Get all users")
+  public ResponseEntity<Page<User>> getAll(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    return new ResponseEntity(userService.getAll(pageable), HttpStatus.OK);
+  }
 
   @GetMapping("/current")
   @Operation(summary = "Get the user that is currently logged in the system")

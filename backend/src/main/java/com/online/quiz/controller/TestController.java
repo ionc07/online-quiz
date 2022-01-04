@@ -1,6 +1,6 @@
 package com.online.quiz.controller;
 
-import com.online.quiz.model.Test;
+import com.online.quiz.dto.TestDTO;
 import com.online.quiz.service.TestService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,8 @@ public class TestController {
 
   @PostMapping
   @Operation(summary = "Creates the quiz")
-  public ResponseEntity<?> create(@RequestBody Test test) {
-    testService.create(test);
+  public ResponseEntity<?> create(@RequestBody TestDTO testDTO) {
+    testService.create(testDTO);
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 

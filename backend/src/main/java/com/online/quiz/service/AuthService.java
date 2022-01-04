@@ -1,10 +1,10 @@
 package com.online.quiz.service;
 
-import com.online.quiz.dto.AuthRequest;
-import com.online.quiz.dto.CreateUserRequest;
+import com.online.quiz.dto.AuthDTO;
+import com.online.quiz.dto.CreateUserDTO;
 
 public interface AuthService {
-  String authenticate(AuthRequest authRequest);
+  String authenticate(AuthDTO authDTO);
 
-  void register(CreateUserRequest createUserRequest);
+  void register(CreateUserDTO createUserDTO);
 }

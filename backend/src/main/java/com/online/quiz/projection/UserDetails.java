@@ -1,8 +1,12 @@
 package com.online.quiz.projection;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.util.Date;
 
 public interface UserDetails {
+
+  Long getId();
 
   String getEmail();
 
@@ -11,4 +15,7 @@ public interface UserDetails {
   String getLastName();
 
   Date getCreatedAt();
+
+  @Value("#{target.role.name}")
+  String getRole();
 }

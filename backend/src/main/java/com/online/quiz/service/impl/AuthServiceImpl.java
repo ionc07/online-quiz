@@ -1,7 +1,7 @@
 package com.online.quiz.service.impl;
 
-import com.online.quiz.dto.AuthRequest;
-import com.online.quiz.dto.CreateUserRequest;
+import com.online.quiz.dto.AuthDTO;
+import com.online.quiz.dto.CreateUserDTO;
 import com.online.quiz.exception.UserAlreadyExistsException;
 import com.online.quiz.mail.EmailService;
 import com.online.quiz.model.User;
@@ -33,29 +33,34 @@ public class AuthServiceImpl implements AuthService {
   private final PasswordEncoder passwordEncoder;
 
   @Override
-  public String authenticate(AuthRequest authRequest) {
-    userRepository.findByEmail(authRequest.getEmail()).ifPresent(t -> {
-      throw new UserAlreadyExistsException("This email is already taken.");
-    });
-    Authentication authenticate = authenticationManager
-            .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
+  public String authenticate(AuthDTO authDTO) {
+    try {
+      Authentication authenticate = authenticationManager
+              .authenticate(new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword()));
+      User user = (User) authenticate.getPrincipal();
 
-    User user = (User) authenticate.getPrincipal();
+      return jwtTokenUtil.generateAccessToken(user);
 
-    return jwtTokenUtil.generateAccessToken(user);
+    } catch (Exception e) {
+      throw new UserAlreadyExistsException("Bad credentials.");
+    }
+
   }
 
   @Override
-  public void register(CreateUserRequest createUserRequest) {
+  public void register(CreateUserDTO createUserDTO) {
+    userRepository.findByEmail(createUserDTO.getEmail()).ifPresent(t -> {
+      throw new UserAlreadyExistsException("This email is already taken.");
+    });
     // TODO
     // user mapper
     User user = new User();
-    user.setFirstName(createUserRequest.getFirstName());
-    user.setLastName(createUserRequest.getLastName());
-    user.setEmail(createUserRequest.getEmail());
+    user.setFirstName(createUserDTO.getFirstName());
+    user.setLastName(createUserDTO.getLastName());
+    user.setEmail(createUserDTO.getEmail());
     user.setRole(roleRepository.findByName("ROLE_user"));
-    user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
+    user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
     userRepository.save(user);
-    emailService.sendMessage(createUserRequest.getEmail(), "Welcome", "Hello and welcome to online quiz platform!");
+    emailService.sendMessage(createUserDTO.getEmail(), "Welcome", "Hello and welcome to online quiz platform!");
   }
 }

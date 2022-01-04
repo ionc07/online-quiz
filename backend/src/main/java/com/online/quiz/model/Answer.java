@@ -8,15 +8,17 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Answer extends AbstractEntity {
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne()
   @JoinColumn(name = "answer_type_id")
   private AnswerType answerType;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne()
   @JoinColumn(name = "question_id")
   private Question question;
 
   private String value;
+
+  private Integer score;
 
   private Boolean correct;
 
@@ -45,6 +47,14 @@ public class Answer extends AbstractEntity {
 
   public void setValue(String value) {
     this.value = value;
+  }
+
+  public Integer getScore() {
+    return score;
+  }
+
+  public void setScore(Integer score) {
+    this.score = score;
   }
 
   public Boolean getCorrect() {

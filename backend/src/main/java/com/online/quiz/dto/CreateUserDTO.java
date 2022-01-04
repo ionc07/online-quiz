@@ -5,24 +5,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateUserRequest {
+public class CreateUserDTO {
 
-  @NotNull
+  @NotEmpty
   private String firstName;
 
-  @NotNull
+  @NotEmpty
   private String lastName;
 
-  @NotNull
+  @NotEmpty
   @Email
   private String email;
 
-  @NotNull
+  @NotEmpty
   private String password;
 
 }

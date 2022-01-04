@@ -1,5 +1,6 @@
 package com.online.quiz.aspect;
 
+import com.online.quiz.dto.ErrorDTO;
 import com.online.quiz.exception.UserAlreadyExistsException;
 import com.online.quiz.exception.UserNotFoundException;
 import com.online.quiz.exception.WrongResetCodeException;
@@ -20,7 +21,7 @@ public class GlobalControllerAdvice {
           UserAlreadyExistsException.class})
   protected ResponseEntity<Object> handleConflict(RuntimeException ex) {
 
-    return ResponseEntity.badRequest().body(ex.getMessage());
+    return ResponseEntity.badRequest().body(new ErrorDTO(ex.getMessage()));
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -1,0 +1,26 @@
+.nav-bar {
+  margin-top: 5rem !important;
+}
+
+.mdi-check-bold {
+  color: #2ea300 !important;
+}
+
+.mdi-close-thick {
+  color: #bb0101 !important;
+}
+
+.v-content__wrap {
+  padding-top: 0px;
+}
+
+.app-container {
+  margin-top: 60px;
+}
+
+.v-toolbar {
+  width: 100% !important;
+  position: fixed !important;
+  background-color: white !important;
+  z-index: 5 !important;
+}

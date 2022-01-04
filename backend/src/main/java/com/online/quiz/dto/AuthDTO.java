@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Getter
 @NoArgsConstructor
-public class AuthRequest {
+public class AuthDTO {
 
   @NotEmpty
   @Email(message = "Email is not well-formed")

@@ -18,7 +18,7 @@ public class Question extends AbstractEntity {
 
   private Integer sequence;
 
-  private Integer time_limit;
+  private Integer timeLimit;
 
   private Boolean waitForTimeLimit;
 
@@ -54,12 +54,12 @@ public class Question extends AbstractEntity {
     this.sequence = sequence;
   }
 
-  public Integer getTime_limit() {
-    return time_limit;
+  public Integer getTimeLimit() {
+    return timeLimit;
   }
 
-  public void setTime_limit(Integer time_limit) {
-    this.time_limit = time_limit;
+  public void setTimeLimit(Integer timeLimit) {
+    this.timeLimit = timeLimit;
   }
 
   public Boolean getWaitForTimeLimit() {

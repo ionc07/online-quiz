@@ -4,7 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -27,7 +26,7 @@ public class User extends AbstractEntity implements UserDetails {
 
   private Date createdAt;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne
   private Role role;
 
   private String resetCode;

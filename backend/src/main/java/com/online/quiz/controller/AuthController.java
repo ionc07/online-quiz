@@ -1,7 +1,7 @@
 package com.online.quiz.controller;
 
-import com.online.quiz.dto.AuthRequest;
-import com.online.quiz.dto.CreateUserRequest;
+import com.online.quiz.dto.AuthDTO;
+import com.online.quiz.dto.CreateUserDTO;
 import com.online.quiz.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -22,15 +22,15 @@ public class AuthController {
   private final AuthService authService;
 
   @PostMapping("sign-in")
-  public ResponseEntity<?> login(@Valid @RequestBody AuthRequest authRequest) {
-    String token = authService.authenticate(authRequest);
+  public ResponseEntity<?> login(@Valid @RequestBody AuthDTO authDTO) {
+    String token = authService.authenticate(authDTO);
 
     return ResponseEntity.ok()
             .header(HttpHeaders.AUTHORIZATION, token).build();
   }
 
   @PostMapping("sign-up")
-  public ResponseEntity<?> register(@Valid @RequestBody CreateUserRequest request) {
+  public ResponseEntity<?> register(@Valid @RequestBody CreateUserDTO request) {
     authService.register(request);
 
     return new ResponseEntity<>(HttpStatus.CREATED);

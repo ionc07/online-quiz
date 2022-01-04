@@ -24,6 +24,7 @@ create table test
     title       varchar(255) not null,
     description varchar(1024),
     user_id     bigint,
+    created_at  timestamp,
     primary key (id)
 );
 
@@ -132,4 +133,4 @@ values ('ROLE_admin'),
 
 insert into users(created_at, email, first_name, last_name, password, role_id)
 values (current_timestamp, 'ciolacu.ion07@gmail.com', 'Ciolacu', 'Ion',
-        '$2a$10$YjuCkqpugtkzUD.Lfh0J3.qYwBxqgI1XAT3WzKoYn7fn/IzA4GWT6', 2);
+        '$2a$10$YjuCkqpugtkzUD.Lfh0J3.qYwBxqgI1XAT3WzKoYn7fn/IzA4GWT6', 1);
