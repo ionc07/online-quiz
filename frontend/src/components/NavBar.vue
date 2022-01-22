@@ -1,6 +1,7 @@
 <template>
   <nav>
     <v-navigation-drawer
+        name="navigation"
         app
         v-model="drawer"
         permanent
@@ -9,7 +10,7 @@
     >
       <v-list-item two-line class="logo">
         <v-img
-            max-width="18%"
+            max-width="40px"
             src="@/assets/quiz-logo.png"
         ></v-img>
         <v-list-item-content>
@@ -33,14 +34,15 @@
             class="pl-0 pr-0 pt-0 pb-0"
             v-ripple="{ class: `white--text` }"
         >
-          <div :class="$store.state.app.activeRoute === item.title
-              ? `active-link active-link-bar ${item.classes}`
-              : `active-link-bar`"></div>
+
           <v-list-item-icon
               :class="
               $store.state.app.activeRoute === item.title ? 'active-link' : ''
             "
           >
+<!--            <div :class="$store.state.app.activeRoute === item.title-->
+<!--              ? `active-link active-link-bar ${item.classes}`-->
+<!--              : `active-link-bar`"></div>-->
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
@@ -94,14 +96,6 @@ export default {
         this.$router.history.push(route);
       }
     },
-  },
-  beforeMount() {
-    let currentPath = this.$router.history.current.path;
-    this.$store.state.app.activeRoute = "My tests";
-    this.items.map((link) => {
-      if (currentPath.includes(link.title.toLowerCase()))
-        this.$store.state.app.activeRoute = link.title;
-    });
   },
 };
 </script>
@@ -162,6 +156,7 @@ i {
 }
 
 .active-link-bar.active-link {
+  margin-right:10px;
   height: 55px;
   background-color: #0c98c9;
   transition: 0.2s;
@@ -175,5 +170,7 @@ i {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   background-color: transparent;
+}
+@media only screen and (max-width: 960px) {
 }
 </style>

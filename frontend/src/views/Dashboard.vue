@@ -2,7 +2,7 @@
   <div class="statistics-content">
     <QuantityStatistics/>
     <v-card
-        elevation="2"
+        elevation="4"
         class="pb-6"
     >
       <div class="line-chart">
@@ -23,8 +23,8 @@ export default {
   data() {
     return {}
   },
-  methods: {}
 
+  methods: {}
 }
 </script>
 
@@ -36,7 +36,13 @@ export default {
 }
 
 .line-chart {
-  width: 40%;
+  width: 100%;
   margin-top: 10px;
 }
+@media only screen and (min-width: 960px) {
+  .line-chart {
+    width: 50%;
+  }
+}
+
 </style>

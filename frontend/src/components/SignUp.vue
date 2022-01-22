@@ -1,6 +1,5 @@
 <template>
   <v-form>
-    <v-container>
       <v-row align="center" justify="center">
         <v-col
             cols="12"
@@ -8,10 +7,6 @@
             md="4"
             align="center" justify="center"
         >
-          <v-img
-              max-width="20%"
-              src="@/assets/quiz-logo.png"
-          ></v-img>
           <p>
           <h3>Create an account</h3>
         </v-col>
@@ -21,7 +16,7 @@
             class="pb-0 pt-1"
             cols="12"
             sm="6"
-            md="4"
+            md="5"
         >
           <v-text-field
               v-model="firstName"
@@ -40,7 +35,7 @@
             class="pb-0 pt-1"
             cols="12"
             sm="6"
-            md="4"
+            md="5"
         >
           <v-text-field
               v-model="lastName"
@@ -59,7 +54,7 @@
             class="pb-0 pt-1"
             cols="12"
             sm="6"
-            md="4"
+            md="5"
         >
           <v-text-field
               v-model="email"
@@ -78,7 +73,7 @@
             class="pb-0 pt-0"
             cols="12"
             sm="6"
-            md="4"
+            md="5"
         >
           <v-text-field
               v-model="password"
@@ -101,7 +96,7 @@
             class="pb-0 pt-0"
             cols="12"
             sm="6"
-            md="4"
+            md="5"
         >
           <v-btn
               class="login-btn"
@@ -119,7 +114,7 @@
             class="pb-0 pt-0"
             cols="12"
             sm="6"
-            md="4"
+            md="5"
             align="center" justify="center"
         >
           <div class="text-decoration-underline pt-2 link"
@@ -128,7 +123,6 @@
           </div>
         </v-col>
       </v-row>
-    </v-container>
   </v-form>
 </template>
 

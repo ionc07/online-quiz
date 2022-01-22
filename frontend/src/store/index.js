@@ -19,8 +19,13 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    login_success(state) {
+    login_success(state, payload) {
       state.app.auth.loggedIn = true;
+
+      this.state.admin = (payload === 'ROLE_admin');
+
+      this.state.role = payload;
+      localStorage.setItem("role", payload);
     },
     login_error(state, payload) {
       state.app.auth.loggedIn = false;
@@ -50,11 +55,9 @@ export default new Vuex.Store({
             .then(response => {
               console.log(response);
               if (response.status === 200) {
-                // this.state.role = response.data.role;
-                // localStorage.setItem("role", response.data.role);
+                commit("login_success", response.data.role);
 
               }
-              commit("login_success");
               resolve(response);
             })
             .catch(() => {

@@ -1,40 +1,44 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-//import store from '../store'
+import store from '../store'
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/home",
-    name: "Home",
+    path: "/create",
+    name: "CreateTest",
     component: () =>
-        import("../views/Home.vue"),
+        import("../views/CreateTest.vue"),
+  },
+  {
+    path: "/tests",
+    name: "UserTests",
+    component: () =>
+        import("../views/UserTests.vue"),
   },
   {
     path: "/userGroups",
-    name: "Users",
+    name: "UserGroups",
     component: () =>
-        import("../views/Users.vue"),
-  },
-  {
-    path: "/login",
-    name: "Authentication",
-    component: () =>
-        import("../views/Authentication.vue"),
+        import("../views/UserGroups.vue"),
   },
   {
     path: "/users",
     name: "Users",
     component: () =>
         import("../views/Users.vue"),
+    meta: {role: "ROLE_admin"},
   },
   {
     path: "/dashboard",
     name: "Dashboard",
     component: () =>
         import("../views/Dashboard.vue"),
+    meta: {role: "ROLE_admin"},
   },
+  // otherwise redirect to tests
+  {path: '*', redirect: '/tests'}
 ];
 
 const router = new VueRouter({
@@ -47,15 +51,16 @@ router.beforeEach((to, from, next) => {
   // if (to.matched.some(record => record.meta.requiresAuth)) {
   // this route requires auth, check if logged in
   // if not, redirect to login page.
-  if (to.path !== "/login")
-      // if (localStorage.getItem("access_token") == null) {
-      //   store.state.app.auth.loggedIn = false;
-      //   next({
-      //     path: "/login"
-      //   });
-      // } else {
-      //   next();
-      // }
-    next(); // make sure to always call next()!
+  console.log(localStorage.getItem("role"));
+  console.log(to.meta);
+
+  if (localStorage.getItem("access_token") == null || localStorage.getItem("role") == null) {
+    store.state.app.auth.loggedIn = false;
+    next({
+      path: "/login"
+    });
+  }
+
+  next(); // make sure to always call next()!
 });
 export default router;

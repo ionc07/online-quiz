@@ -1,6 +1,6 @@
 <template>
   <v-card
-      elevation="2"
+      elevation="4"
       class="pb-6"
   >
     <v-card-title>Quantitative statistics</v-card-title>
@@ -53,7 +53,6 @@ export default {
             this.qtyStats = response.data;
           })
           .catch(error => {
-            console.log("Error to login!");
             console.log(error);
 
             this.loading = false;

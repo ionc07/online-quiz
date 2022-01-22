@@ -2,6 +2,7 @@
   <v-form ref="form"
           v-model="valid" @submit.prevent="submit">
     <v-container>
+
       <v-row align="center" justify="center">
         <v-col
             cols="12"
@@ -9,10 +10,6 @@
             md="4"
             align="center" justify="center"
         >
-          <v-img
-              max-width="20%"
-              src="@/assets/quiz-logo.png"
-          ></v-img>
           <p>
           <h3>Log into your account</h3>
         </v-col>
@@ -22,9 +19,10 @@
             class="pb-0 pt-1"
             cols="12"
             sm="6"
-            md="4"
+            md="6"
         >
           <v-text-field
+              id="email-input"
               v-model="email"
               label="E-mail address"
               :rules="rules.emailRules"
@@ -39,9 +37,10 @@
             class="pb-0 pt-0"
             cols="12"
             sm="6"
-            md="4"
+            md="6"
         >
           <v-text-field
+              id="password-input"
               v-model="password"
               :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
               :type="show ? 'text' : 'password'"
@@ -59,7 +58,7 @@
             class="pb-0 pt-0"
             cols="12"
             sm="6"
-            md="4"
+            md="6"
         >
           <v-btn
               class="login-btn"
@@ -77,10 +76,10 @@
             class="pb-0 pt-0"
             cols="12"
             sm="6"
-            md="4"
+            md="6"
             align="center" justify="center"
         >
-          <div class="text-decoration-underline pt-2 link"
+          <div id="create-account" class="text-decoration-underline pt-2 link"
                @click="goToRegister()">
             Create an account
           </div>
