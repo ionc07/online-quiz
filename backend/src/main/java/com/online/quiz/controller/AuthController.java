@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "auth/")
@@ -23,10 +24,10 @@ public class AuthController {
 
   @PostMapping("sign-in")
   public ResponseEntity<?> login(@Valid @RequestBody AuthDTO authDTO) {
-    String token = authService.authenticate(authDTO);
+    Map<String, String> tokenAndRole = authService.authenticate(authDTO);
 
     return ResponseEntity.ok()
-            .header(HttpHeaders.AUTHORIZATION, token).build();
+            .header(HttpHeaders.AUTHORIZATION, tokenAndRole.remove("token")).body(tokenAndRole);
   }
 
   @PostMapping("sign-up")

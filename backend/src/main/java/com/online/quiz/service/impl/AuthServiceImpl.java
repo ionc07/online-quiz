@@ -16,6 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -33,13 +36,17 @@ public class AuthServiceImpl implements AuthService {
   private final PasswordEncoder passwordEncoder;
 
   @Override
-  public String authenticate(AuthDTO authDTO) {
+  public Map<String, String> authenticate(AuthDTO authDTO) {
     try {
       Authentication authenticate = authenticationManager
               .authenticate(new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword()));
       User user = (User) authenticate.getPrincipal();
 
-      return jwtTokenUtil.generateAccessToken(user);
+      Map<String, String> tokenAndRole = new HashMap<>();
+      tokenAndRole.put("token", jwtTokenUtil.generateAccessToken(user));
+      tokenAndRole.put("role", user.getRole().getName());
+
+      return tokenAndRole;
 
     } catch (Exception e) {
       throw new UserAlreadyExistsException("Bad credentials.");

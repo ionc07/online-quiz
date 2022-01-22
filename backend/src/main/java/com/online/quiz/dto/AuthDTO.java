@@ -13,11 +13,9 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class AuthDTO {
 
-  @NotEmpty
   @Email(message = "Email is not well-formed")
   private String email;
 
-  @NotEmpty
   @Size(min = 8, max = 32)
   private String password;
 }
