@@ -1,10 +1,9 @@
 package com.online.quiz.service.impl;
 
 import com.online.quiz.dto.TestDTO;
-import com.online.quiz.model.Question;
 import com.online.quiz.model.Test;
 import com.online.quiz.model.TestSettings;
-import com.online.quiz.model.User;
+import com.online.quiz.model.mapper.Mapper;
 import com.online.quiz.repository.TestRepository;
 import com.online.quiz.service.TestService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,8 @@ import java.util.List;
 public class TestServiceImpl implements TestService {
 
   private final TestRepository testRepository;
+
+  private final Mapper<Test, TestDTO> testDtoMapper;
 
   @Override
   public void create(TestDTO testDTO) {
@@ -33,8 +34,10 @@ public class TestServiceImpl implements TestService {
   }
 
   @Override
-  public List<Test> getAllTests() {
-    return testRepository.findAllBy();
+  public List<TestDTO> getAllTests() {
+    List<Test> tests = testRepository.findAllBy();
+
+    return testDtoMapper.mapList(tests);
   }
 
 }

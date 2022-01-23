@@ -100,6 +100,29 @@ create table chat_message
     primary key (id)
 );
 
+create table groups
+(
+    id    serial       not null,
+    title varchar(150) not null,
+    primary key (id)
+);
+
+create table test_group
+(
+    id       serial  not null,
+    group_id integer not null,
+    test_id  bigint  not null
+);
+
+create table user_group
+(
+    id       serial  not null,
+    group_id integer not null,
+    user_id  bigint  not null,
+    primary key (id)
+);
+
+
 alter table if exists users
     add constraint user_role_fk foreign key (role_id) references role;
 
@@ -126,6 +149,16 @@ alter table if exists user_response
 
 alter table if exists chat_message
     add constraint chat_message_user_test_fk foreign key (user_test_id) references user_test;
+
+alter table if exists test_group
+    add constraint test_group_fk foreign key (group_id) references groups;
+
+alter table if exists test_group
+    add constraint test_group_test_fk foreign key (test_id) references test;
+
+alter table if exists user_group
+    add constraint group_fk foreign key (group_id) references groups;
+
 
 insert into role(name)
 values ('ROLE_admin'),

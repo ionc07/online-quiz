@@ -1,16 +1,15 @@
 package com.online.quiz.dto;
 
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
+@Builder
 public class UserResetPasswordDTO {
 
   @NotNull(message = "Email is mandatory")

@@ -1,14 +1,12 @@
 package com.online.quiz.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 
-@Setter
-@Getter
-@NoArgsConstructor
+@Data
+@Builder
 public class AnswerDTO {
-  private AnswerTypeDTO answerType;
+  private String answerType;
 
   private String value;
 

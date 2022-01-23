@@ -1,14 +1,15 @@
 package com.online.quiz.dto;
 
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
 
-@Setter
-@Getter
-@NoArgsConstructor
+@Data
+@Builder
 public class TestSettingsDTO {
   private Date availableFrom;
 
