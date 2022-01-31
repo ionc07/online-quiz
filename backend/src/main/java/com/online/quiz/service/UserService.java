@@ -1,10 +1,11 @@
 package com.online.quiz.service;
 
+import com.online.quiz.dto.UserDTO;
 import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.dto.UserUpdateDTO;
+import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.model.User;
 import com.online.quiz.projection.UserDetails;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
@@ -16,7 +17,7 @@ public interface UserService {
 
   UserDetails getCurrentUser();
 
-  Page<UserDetails> getAll(Pageable pageable);
+  PaginationDTO<UserDTO> getAll(Pageable pageable);
 
   void delete(Long id);
 

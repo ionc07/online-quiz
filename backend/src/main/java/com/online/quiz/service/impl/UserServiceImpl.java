@@ -1,11 +1,14 @@
 package com.online.quiz.service.impl;
 
+import com.online.quiz.dto.UserDTO;
 import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.dto.UserUpdateDTO;
+import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.exception.UserNotFoundException;
 import com.online.quiz.exception.WrongResetCodeException;
 import com.online.quiz.mail.EmailService;
 import com.online.quiz.model.User;
+import com.online.quiz.model.mapper.Mapper;
 import com.online.quiz.projection.UserDetails;
 import com.online.quiz.repository.UserRepository;
 import com.online.quiz.service.UserService;
@@ -30,6 +33,8 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
 
   private final EmailService emailService;
+
+  private final Mapper<User, UserDTO> userToDtoMapper;
 
   @Override
   @Transactional
@@ -83,8 +88,12 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<UserDetails> getAll(Pageable pageable) {
-    return userRepository.findAllBy(pageable);
+  public PaginationDTO<UserDTO> getAll(Pageable pageable) {
+
+    Page<User> usersPage = userRepository.findAllBy(pageable);
+    PaginationDTO<UserDTO> paginationDTO = new PaginationDTO<>(userToDtoMapper.mapList(usersPage.getContent()), usersPage);
+
+    return paginationDTO;
   }
 
   @Override
@@ -98,7 +107,7 @@ public class UserServiceImpl implements UserService {
   public String getCurrentUserEmail() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    return auth.getPrincipal().toString();
+    return ((User) auth.getPrincipal()).getEmail();
   }
 
   public String getRandomString() {

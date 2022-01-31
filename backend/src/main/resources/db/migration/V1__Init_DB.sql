@@ -25,6 +25,7 @@ create table test
     description varchar(1024),
     user_id     bigint,
     created_at  timestamp,
+    settings_id bigint       not null,
     primary key (id)
 );
 
@@ -36,7 +37,6 @@ create table test_settings
     chat_enabled   boolean default false,
     time_limit     integer,
     max_attempts   integer default 1,
-    test_id        bigint,
     primary key (id)
 );
 
@@ -129,8 +129,8 @@ alter table if exists users
 alter table if exists test
     add constraint user_test_fk foreign key (user_id) references users;
 
-alter table if exists test_settings
-    add constraint test_fk foreign key (test_id) references test;
+alter table if exists test
+    add constraint test_settings_fk foreign key (settings_id) references test_settings;
 
 alter table if exists user_test
     add constraint user_test_test_fk foreign key (test_id) references test,

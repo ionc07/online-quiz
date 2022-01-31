@@ -1,9 +1,13 @@
 package com.online.quiz.controller;
 
 import com.online.quiz.dto.TestDTO;
+import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.service.TestService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +32,7 @@ public class TestController {
 
   @GetMapping
   @Operation(summary = "Returns all tests")
-  public ResponseEntity<?> getAll() {
-    return new ResponseEntity<>(testService.getAllTests(), HttpStatus.OK);
+  public ResponseEntity<PaginationDTO<TestDTO>> getAll(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    return new ResponseEntity<>(testService.getAllTests(pageable), HttpStatus.OK);
   }
 }

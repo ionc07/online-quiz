@@ -58,4 +58,8 @@ public class TestSettings extends AbstractEntity {
   public void setMaxAttempts(Integer maxAttempts) {
     this.maxAttempts = maxAttempts;
   }
+
+  public Boolean getChatEnabled() {
+    return chatEnabled;
+  }
 }

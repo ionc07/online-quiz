@@ -1,13 +1,13 @@
 package com.online.quiz.controller;
 
+import com.online.quiz.dto.UserDTO;
 import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.dto.UserUpdateDTO;
-import com.online.quiz.model.User;
+import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.projection.UserDetails;
 import com.online.quiz.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -34,7 +34,7 @@ public class UserController {
 
   @GetMapping
   @Operation(summary = "Get all users")
-  public ResponseEntity<Page<User>> getAll(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+  public ResponseEntity<PaginationDTO<UserDTO>> getAll(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
     return new ResponseEntity(userService.getAll(pageable), HttpStatus.OK);
   }
 

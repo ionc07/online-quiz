@@ -1,7 +1,10 @@
 package com.online.quiz.service;
 
+import com.online.quiz.dto.UserDTO;
 import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.mail.EmailService;
+import com.online.quiz.model.User;
+import com.online.quiz.model.mapper.Mapper;
 import com.online.quiz.repository.UserRepository;
 import com.online.quiz.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,9 +35,11 @@ class UserServiceImplTest {
 
   private UserResetPasswordDTO userResetPasswordDTO;
 
+  private Mapper<User, UserDTO> userUserDTOMapper;
+
   @BeforeEach
   public void setUp() {
-    userService = new UserServiceImpl(userRepository, passwordEncoder, emailService);
+    userService = new UserServiceImpl(userRepository, passwordEncoder, emailService, userUserDTOMapper);
 
     userResetPasswordDTO = UserResetPasswordDTO.builder()
             .email("ion07@gmail.com")
