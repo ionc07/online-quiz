@@ -4,7 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Date;
+import javax.persistence.PrePersist;
+import java.time.LocalDateTime;
 
 @Entity
 public class ChatMessage extends AbstractEntity {
@@ -17,7 +18,7 @@ public class ChatMessage extends AbstractEntity {
 
   private Boolean teacher;
 
-  private Date date;
+  private LocalDateTime date;
 
   public ChatMessage() {
   }
@@ -46,11 +47,12 @@ public class ChatMessage extends AbstractEntity {
     this.teacher = teacher;
   }
 
-  public Date getDate() {
+  public LocalDateTime getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
-    this.date = date;
+  @PrePersist
+  public void setDate() {
+    this.date = LocalDateTime.now();
   }
 }

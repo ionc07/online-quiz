@@ -11,9 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -31,7 +31,7 @@ public class User extends AbstractEntity implements UserDetails {
 
   private String password;
 
-  private Date createdAt;
+  private LocalDateTime createdAt;
 
   @OneToOne
   private Role role;
@@ -43,7 +43,7 @@ public class User extends AbstractEntity implements UserDetails {
 
   @PrePersist
   public void setCreatedAt() {
-    this.createdAt = new Date();
+    this.createdAt = LocalDateTime.now();
   }
 
   @Override

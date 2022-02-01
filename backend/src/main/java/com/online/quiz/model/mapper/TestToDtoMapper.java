@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TestToDtoMapper implements Mapper<Test, TestDTO> {
+public class TestToDtoMapper extends Mapper<Test, TestDTO> {
 
   private final QuestionToDtoMapper questionToDtoMapper;
 

@@ -12,16 +12,17 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 public class ArchUnitTest {
   @ArchTest
   static final ArchRule layeredArchitectureRule = layeredArchitecture()
-          .layer("Controller").definedBy("..web..")
-          .layer("Domain").definedBy("..domain..")
+          .layer("Controller").definedBy("..controller..")
+          .layer("Model").definedBy("..model..")
           .layer("Repository").definedBy("..repository..")
           .layer("Service").definedBy("..service..")
           .layer("Configuration").definedBy("..config..")
+          .layer("Security").definedBy("..security..")
 
           .whereLayer("Controller").mayNotBeAccessedByAnyLayer()
-          .whereLayer("Domain").mayOnlyBeAccessedByLayers("Repository", "Service", "Configuration")
-          .whereLayer("Repository").mayOnlyBeAccessedByLayers("Service", "Configuration")
-          .whereLayer("Service").mayOnlyBeAccessedByLayers("Controller", "Service");
+          .whereLayer("Model").mayOnlyBeAccessedByLayers("Repository", "Service", "Configuration", "Security")
+          .whereLayer("Repository").mayOnlyBeAccessedByLayers("Service", "Configuration", "Security")
+          .whereLayer("Service").mayOnlyBeAccessedByLayers("Controller", "Service", "Security");
 
   @ArchTest
   public static final ArchRule loggingLibraryShouldBeUsedInsteadOfSystemOut =

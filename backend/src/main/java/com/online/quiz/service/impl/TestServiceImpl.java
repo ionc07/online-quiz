@@ -4,6 +4,7 @@ import com.online.quiz.dto.AnswerDTO;
 import com.online.quiz.dto.QuestionDTO;
 import com.online.quiz.dto.TestDTO;
 import com.online.quiz.dto.TestSettingsDTO;
+import com.online.quiz.dto.TestShortDetailsDTO;
 import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.model.Answer;
 import com.online.quiz.model.AnswerType;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,8 @@ public class TestServiceImpl implements TestService {
   private final QuestionRepository questionRepository;
   private final AnswerRepository answerRepository;
 
-  private final Mapper<Test, TestDTO> testDtoMapper;
+  private final Mapper<Test, TestShortDetailsDTO> testShortDetailsDTOMapper;
+  private final Mapper<Test, TestDTO> testToDTOMapper;
 
   private final UserService userService;
 
@@ -54,8 +57,8 @@ public class TestServiceImpl implements TestService {
 
     TestSettings testSettings = new TestSettings();
 
-    testSettings.setAvailableFrom(testSettingsDTO.getAvailableFrom());
-    testSettings.setAvailableTo(testSettingsDTO.getAvailableTo());
+    testSettings.setAvailableFrom(LocalDateTime.parse(testSettingsDTO.getAvailableFrom()));
+    testSettings.setAvailableTo(LocalDateTime.parse(testSettingsDTO.getAvailableTo()));
     testSettings.setChatEnabled(testSettingsDTO.getChatEnabled());
     testSettingsDTO.setMaxAttempts(testSettingsDTO.getMaxAttempts());
     testSettings.setTimeLimit(testSettingsDTO.getTimeLimit());
@@ -97,11 +100,18 @@ public class TestServiceImpl implements TestService {
   }
 
   @Override
-  public PaginationDTO<TestDTO> getAllTests(Pageable pageable) {
+  public PaginationDTO<TestShortDetailsDTO> getAllTests(Pageable pageable) {
     Page<Test> testsPage = testRepository.findAllBy(pageable);
-    PaginationDTO<TestDTO> paginationDTO = new PaginationDTO<>(testDtoMapper.mapList(testsPage.getContent()), testsPage);
+    PaginationDTO<TestShortDetailsDTO> paginationDTO = new PaginationDTO<>(testShortDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
 
     return paginationDTO;
+  }
+
+  @Override
+  public TestDTO getTest(Long id) {
+    Test test = testRepository.findTestById(id);
+
+    return testToDTOMapper.map(test);
   }
 
 }

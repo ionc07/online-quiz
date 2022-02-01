@@ -5,7 +5,7 @@ import com.online.quiz.model.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserToDtoMapper implements Mapper<User, UserDTO> {
+public class UserToDtoMapper extends Mapper<User, UserDTO> {
 
   @Override
   public UserDTO map(User entity) {
@@ -13,7 +13,7 @@ public class UserToDtoMapper implements Mapper<User, UserDTO> {
             .firstName(entity.getFirstName())
             .lastName(entity.getLastName())
             .email(entity.getEmail())
-            .createdAt(entity.getCreatedAt().toString())
+            .createdAt(entity.getCreatedAt().format(formatter))
             .role(entity.getRole().getName())
             .build();
   }

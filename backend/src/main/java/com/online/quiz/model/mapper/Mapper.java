@@ -1,20 +1,27 @@
 package com.online.quiz.model.mapper;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@FunctionalInterface
-public interface Mapper<E, D> {
-  D map(E entity);
+public abstract class Mapper<E, D> {
 
-  default List<D> mapList(List<E> entities) {
+  public DateTimeFormatter formatter;
+
+  public Mapper() {
+    formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+  }
+
+  public abstract D map(E entity);
+
+  public List<D> mapList(List<E> entities) {
     return entities.stream()
             .map(this::map)
             .collect(Collectors.toList());
   }
 
-  default Set<D> mapList(Set<E> entities) {
+  public Set<D> mapList(Set<E> entities) {
     return entities.stream()
             .map(this::map)
             .collect(Collectors.toSet());

@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -28,7 +28,7 @@ public class Test extends AbstractEntity {
   @JoinColumn(name = "test_id")
   private List<Question> questions;
 
-  private Date createdAt;
+  private LocalDateTime createdAt;
 
   public Test() {
   }
@@ -73,12 +73,12 @@ public class Test extends AbstractEntity {
     this.questions = questions;
   }
 
-  public Date getCreatedAt() {
+  public LocalDateTime getCreatedAt() {
     return createdAt;
   }
 
   @PrePersist
   public void setCreatedAt() {
-    this.createdAt = new Date();
+    this.createdAt = LocalDateTime.now();
   }
 }

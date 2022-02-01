@@ -5,12 +5,12 @@ import com.online.quiz.model.TestSettings;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestSettingsToDtoMapper implements Mapper<TestSettings, TestSettingsDTO> {
+public class TestSettingsToDtoMapper extends Mapper<TestSettings, TestSettingsDTO> {
   @Override
   public TestSettingsDTO map(TestSettings entity) {
     return TestSettingsDTO.builder()
-            .availableFrom(entity.getAvailableFrom())
-            .availableTo(entity.getAvailableTo())
+            .availableFrom(entity.getAvailableFrom().format(formatter))
+            .availableTo(entity.getAvailableTo().format(formatter))
             .chatEnabled(entity.isChatEnabled())
             .maxAttempts(entity.getMaxAttempts())
             .timeLimit(entity.getTimeLimit())

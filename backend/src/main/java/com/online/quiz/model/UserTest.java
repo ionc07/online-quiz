@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class UserTest extends AbstractEntity {
@@ -17,9 +17,9 @@ public class UserTest extends AbstractEntity {
   @JoinColumn(name = "test_id")
   private Test test;
 
-  private Date startDate;
+  private LocalDateTime startDate;
 
-  private Date submitDate;
+  private LocalDateTime submitDate;
 
   public UserTest() {
   }
@@ -40,19 +40,19 @@ public class UserTest extends AbstractEntity {
     this.test = test;
   }
 
-  public Date getStartDate() {
+  public LocalDateTime getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(LocalDateTime startDate) {
     this.startDate = startDate;
   }
 
-  public Date getSubmitDate() {
+  public LocalDateTime getSubmitDate() {
     return submitDate;
   }
 
-  public void setSubmitDate(Date submitDate) {
+  public void setSubmitDate(LocalDateTime submitDate) {
     this.submitDate = submitDate;
   }
 }

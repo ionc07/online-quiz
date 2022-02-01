@@ -7,14 +7,11 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class TestSettingsDTO {
+public class TestShortDetailsDTO {
+  private Long id;
+  private String title;
+  private String creatorName;
   private String availableFrom;
-
   private String availableTo;
-
-  private Boolean chatEnabled;
-
-  private Integer timeLimit;
-
-  private Integer maxAttempts;
+  private Boolean available;
 }

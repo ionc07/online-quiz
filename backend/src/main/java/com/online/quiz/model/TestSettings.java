@@ -1,14 +1,14 @@
 package com.online.quiz.model;
 
 import javax.persistence.Entity;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class TestSettings extends AbstractEntity {
 
-  private Date availableFrom;
+  private LocalDateTime availableFrom;
 
-  private Date availableTo;
+  private LocalDateTime availableTo;
 
   private Boolean chatEnabled;
 
@@ -19,19 +19,19 @@ public class TestSettings extends AbstractEntity {
   public TestSettings() {
   }
 
-  public Date getAvailableFrom() {
+  public LocalDateTime getAvailableFrom() {
     return availableFrom;
   }
 
-  public void setAvailableFrom(Date availableFrom) {
+  public void setAvailableFrom(LocalDateTime availableFrom) {
     this.availableFrom = availableFrom;
   }
 
-  public Date getAvailableTo() {
+  public LocalDateTime getAvailableTo() {
     return availableTo;
   }
 
-  public void setAvailableTo(Date availableTo) {
+  public void setAvailableTo(LocalDateTime availableTo) {
     this.availableTo = availableTo;
   }
 

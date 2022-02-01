@@ -5,7 +5,7 @@ import com.online.quiz.model.Answer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AnswerToDtoMapper implements Mapper<Answer, AnswerDTO> {
+public class AnswerToDtoMapper extends Mapper<Answer, AnswerDTO> {
   @Override
   public AnswerDTO map(Answer entity) {
     return AnswerDTO.builder()

@@ -12,6 +12,8 @@ import java.util.List;
 public interface TestRepository extends JpaRepository<Test, Long> {
   Page<Test> findAllBy(Pageable pageable);
 
+  Test findTestById(Long id);
+
   @Query(value = "select to_char(created_at, 'yyyy-mm-dd') date, count(id) from test group by date order by date limit 7", nativeQuery = true)
   List<TestCreationsStatistics> findWeeklyCreationsCount();
 }
