@@ -12,16 +12,18 @@ import java.util.List;
 @Builder
 public class QuestionDTO {
 
-  private String value;
+    private String answerType;
 
-  private Integer sequence;
+    private String value;
 
-  private Integer timeLimit;
+    private Integer sequence;
 
-  private Boolean waitForTimeLimit;
+    private Integer timeLimit;
 
-  private Integer score;
+    private Boolean waitForTimeLimit;
 
-  private List<AnswerDTO> answers;
+    private Integer score;
+
+    private List<AnswerDTO> answers;
 
 }

@@ -10,79 +10,90 @@ import java.util.List;
 @Entity
 public class Question extends AbstractEntity {
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "test_id")
-  private Test test;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id")
+    private Test test;
 
-  private String value;
+    @ManyToOne
+    @JoinColumn(name = "answer_type_id")
+    private AnswerType answerType;
 
-  private Integer sequence;
+    private String value;
 
-  private Integer timeLimit;
+    private Integer sequence;
 
-  private Boolean waitForTimeLimit;
+    private Integer timeLimit;
 
-  private Integer score;
+    private Boolean waitForTimeLimit;
 
-  @OneToMany(mappedBy = "question")
-  private List<Answer> answers;
+    private Integer score;
 
-  public Question() {
-  }
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers;
 
-  public Test getTest() {
-    return test;
-  }
+    public Question() {
+    }
 
-  public void setTest(Test test) {
-    this.test = test;
-  }
+    public Test getTest() {
+        return test;
+    }
 
-  public String getValue() {
-    return value;
-  }
+    public void setTest(Test test) {
+        this.test = test;
+    }
 
-  public void setValue(String value) {
-    this.value = value;
-  }
+    public AnswerType getAnswerType() {
+        return answerType;
+    }
 
-  public Integer getSequence() {
-    return sequence;
-  }
+    public void setAnswerType(AnswerType answerType) {
+        this.answerType = answerType;
+    }
+    public String getValue() {
+        return value;
+    }
 
-  public void setSequence(Integer sequence) {
-    this.sequence = sequence;
-  }
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-  public Integer getTimeLimit() {
-    return timeLimit;
-  }
+    public Integer getSequence() {
+        return sequence;
+    }
 
-  public void setTimeLimit(Integer timeLimit) {
-    this.timeLimit = timeLimit;
-  }
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
 
-  public Boolean getWaitForTimeLimit() {
-    return waitForTimeLimit;
-  }
+    public Integer getTimeLimit() {
+        return timeLimit;
+    }
 
-  public void setWaitForTimeLimit(Boolean waitForTimeLimit) {
-    this.waitForTimeLimit = waitForTimeLimit;
-  }
+    public void setTimeLimit(Integer timeLimit) {
+        this.timeLimit = timeLimit;
+    }
 
-  public Integer getScore() {
-    return score;
-  }
+    public Boolean getWaitForTimeLimit() {
+        return waitForTimeLimit;
+    }
 
-  public void setScore(Integer score) {
-    this.score = score;
-  }
+    public void setWaitForTimeLimit(Boolean waitForTimeLimit) {
+        this.waitForTimeLimit = waitForTimeLimit;
+    }
 
-  public List<Answer> getAnswers() {
-    return answers;
-  }
+    public Integer getScore() {
+        return score;
+    }
 
-  public void setAnswers(List<Answer> answers) {
-    this.answers = answers;
-  }
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
 }

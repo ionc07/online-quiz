@@ -43,28 +43,24 @@ public class TestServiceImpl implements TestService {
   @Transactional
   @Override
   public void create(TestDTO testDTO) {
-    Test test = new Test();
-    // General info test mapping
-    test.setUser(userService.findUserByEmail(userService.getCurrentUserEmail()));
-    test.setDescription(testDTO.getDescription());
-    test.setTitle(testDTO.getTitle());
-    test = testRepository.save(test);
-
-    Long testId = test.getId();
-
     // Test settings mapping
     TestSettingsDTO testSettingsDTO = testDTO.getSettings();
 
     TestSettings testSettings = new TestSettings();
 
-    testSettings.setAvailableFrom(LocalDateTime.parse(testSettingsDTO.getAvailableFrom()));
-    testSettings.setAvailableTo(LocalDateTime.parse(testSettingsDTO.getAvailableTo()));
+    testSettings.setAvailableFrom(LocalDateTime.parse(testSettingsDTO.getAvailableFrom(), testToDTOMapper.getFormatter()));
+    testSettings.setAvailableTo(LocalDateTime.parse(testSettingsDTO.getAvailableTo(), testToDTOMapper.getFormatter()));
     testSettings.setChatEnabled(testSettingsDTO.getChatEnabled());
     testSettingsDTO.setMaxAttempts(testSettingsDTO.getMaxAttempts());
     testSettings.setTimeLimit(testSettingsDTO.getTimeLimit());
 
     testSettings = testSettingsRepository.save(testSettings);
 
+    // General info test mapping
+    Test test = new Test();
+    test.setUser(userService.findUserByEmail(userService.getCurrentUserEmail()));
+    test.setDescription(testDTO.getDescription());
+    test.setTitle(testDTO.getTitle());
     test.setSettings(testSettings);
     test = testRepository.save(test);
 
@@ -72,6 +68,10 @@ public class TestServiceImpl implements TestService {
     for (QuestionDTO questionDTO : testDTO.getQuestions()) {
       Question question = new Question();
 
+      AnswerType answerType = new AnswerType();
+      answerType.setId(1L);
+
+      question.setAnswerType(answerType);
       question.setValue(questionDTO.getValue());
       question.setScore(questionDTO.getScore());
       question.setSequence(questionDTO.getSequence());
@@ -88,10 +88,6 @@ public class TestServiceImpl implements TestService {
         answer.setValue(answerDTO.getValue());
         answer.setCorrect(answerDTO.getCorrect());
 
-        AnswerType answerType = new AnswerType();
-        answerType.setId(1L);
-
-        answer.setAnswerType(answerType);
         answer.setQuestion(question);
 
         answerRepository.save(answer);

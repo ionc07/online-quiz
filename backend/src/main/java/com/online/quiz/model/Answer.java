@@ -9,10 +9,6 @@ import javax.persistence.ManyToOne;
 public class Answer extends AbstractEntity {
 
   @ManyToOne()
-  @JoinColumn(name = "answer_type_id")
-  private AnswerType answerType;
-
-  @ManyToOne()
   @JoinColumn(name = "question_id")
   private Question question;
 
@@ -23,14 +19,6 @@ public class Answer extends AbstractEntity {
   private Boolean correct;
 
   public Answer() {
-  }
-
-  public AnswerType getAnswerType() {
-    return answerType;
-  }
-
-  public void setAnswerType(AnswerType answerType) {
-    this.answerType = answerType;
   }
 
   public Question getQuestion() {

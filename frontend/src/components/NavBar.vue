@@ -5,17 +5,12 @@
         app
         v-model="drawer"
         permanent
-        :mini-variant="$vuetify.breakpoint.smAndDown"
+        :mini-variant="$vuetify.breakpoint.smAndDown || $store.state.nav.miniNavBar"
         width="224"
     >
       <v-list-item two-line class="logo">
-        <v-img
-            max-width="40px"
-            src="@/assets/quiz-logo.png"
-        ></v-img>
-        <v-list-item-content>
-          <v-list-item-title class="pl-3">QuizTerra</v-list-item-title>
-        </v-list-item-content>
+        <v-img max-width="40px" src="@/assets/quiz-logo.png"></v-img>
+
       </v-list-item>
 
       <v-divider></v-divider>
@@ -25,35 +20,16 @@
             v-for="item in getNavLinks()"
             :key="item.title"
             link
-            :class="
-            $store.state.app.activeRoute === item.title
-              ? `active-link ${item.classes}`
-              : item.classes
-          "
-            @click="navLinkClick(item.title, item.route)"
-            class="pl-0 pr-0 pt-0 pb-0"
+            :to="item.route"
             v-ripple="{ class: `white--text` }"
         >
-
-          <v-list-item-icon
-              :class="
-              $store.state.app.activeRoute === item.title ? 'active-link' : ''
-            "
-          >
-<!--            <div :class="$store.state.app.activeRoute === item.title-->
-<!--              ? `active-link active-link-bar ${item.classes}`-->
-<!--              : `active-link-bar`"></div>-->
-            <v-icon>{{ item.icon }}</v-icon>
+          <v-list-item-icon>
+            <v-icon size="30px">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title
-                :class="
-                $store.state.app.activeRoute === item.title ? 'active-link' : ''
-              "
-            >{{ item.title }}
-            </v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title>
+            {{ item.title }}
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -61,25 +37,35 @@
 </template>
 
 <script>
+
 export default {
+  components: {},
   data() {
     return {
       drawer: true,
       items: [
-        {icon: "mdi-plus-circle", title: "Create test", route: "/create"},
+        {icon: "mdi-plus-circle", title: "Create test", route: "/createTest"},
         {icon: "mdi-school", title: "My tests", route: "/tests"},
-        {icon: "mdi-account-supervisor-circle", title: "User groups", route: "/userGroups"},
-        {icon: "mdi-account", title: "Account", route: "/account"},
+        {
+          icon: "mdi-account-supervisor-circle",
+          title: "User groups",
+          route: "/userGroups"
+        },
+        {icon: "mdi-account", title: "Account", route: "/account"}
       ],
       adminItems: [
         {
           icon: "mdi-view-dashboard",
           title: "Dashboard",
-          route: "/dashboard",
+          route: "/dashboard"
         },
-        {icon: "mdi-account-multiple", title: "Manage users", route: "/users"},
-        {icon: "mdi-account", title: "Account", route: "/account"},
-      ],
+        {
+          icon: "mdi-account-multiple",
+          title: "Manage users",
+          route: "/users"
+        },
+        {icon: "mdi-account", title: "Account", route: "/account"}
+      ]
     };
   },
   methods: {
@@ -95,8 +81,8 @@ export default {
         this.$store.state.app.activeRoute = title;
         this.$router.history.push(route);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -109,40 +95,30 @@ nav {
   padding: 5px 5px 5px 8px !important;
 }
 
-.v-navigation-drawer__content .v-list .v-list-item .v-list-item__icon i {
-  margin-left: 16px;
+.v-list-item--active {
+  background-color: #035071;
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+.v-list-item--active div {
+  color: #ffffff;
+}
+
+.v-list-item--active div.v-list-item__icon i {
+  color: #ffffff !important;
+}
+
+.v-list-item .v-list-item__icon i {
+  margin-left: 5px;
   color: #035071 !important;
 }
 
-.v-navigation-drawer__content
-.v-list
-.v-list-item
-.v-list-item__icon.active-link
-i {
-  transition: 0.3s;
-  color: #0c98c9 !important;
-}
-
-.v-navigation-drawer__content
-.v-list
-.v-list-item
-.v-list-item__content
-.v-list-item__title,
-.v-navigation-drawer__content
-.v-list-item
-.v-list-item__content
-.v-list-item__title {
-  margin-left: 15px;
-  /* color: #afb9c2 !important; */
-}
-
-.v-navigation-drawer__content
-.v-list
-.v-list-item
-.v-list-item__content
-.v-list-item__title.active-link {
-  transition: 0.3s;
-  color: #0c98c9 !important;
+.line {
+  display: none;
+  height: 50px;
+  width: 3px;
+  background-color: #690101 !important;
 }
 
 .theme--light.v-divider {
@@ -155,22 +131,6 @@ i {
   bottom: 16px !important;
 }
 
-.active-link-bar.active-link {
-  margin-right:10px;
-  height: 55px;
-  background-color: #0c98c9;
-  transition: 0.2s;
-}
-
-.active-link-bar {
-  display: block;
-  position: absolute;
-  width: 5px;
-  height: 0;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  background-color: transparent;
-}
 @media only screen and (max-width: 960px) {
 }
 </style>

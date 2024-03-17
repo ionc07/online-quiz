@@ -1,11 +1,9 @@
 <template>
   <v-toolbar dense outlined>
-    <v-toolbar-title>{{ $store.state.app.activeRoute }}</v-toolbar-title>
-    <!--    <div class="admin-switch">-->
-    <!--      <v-switch v-model="admin" label="Admin" @change="changeAdminState"></v-switch>-->
-    <!--    </div>-->
+    <v-app-bar-nav-icon @click="$store.state.nav.miniNavBar = !$store.state.nav.miniNavBar"></v-app-bar-nav-icon>
+    <v-toolbar-title>{{ $route.name }}</v-toolbar-title>
     <v-progress-linear
-        v-show="$store.state.app.fetchLoading"
+        v-show="false"
         color="blue"
         rounded
         slot="extension"
@@ -20,24 +18,14 @@ export default {
     admin: false
   }),
   methods: {
-    changeAdminState() {
-      this.admin = !this.admin;
-      this.$store.state.admin = this.admin;
-    }
   }
 }
 </script>
 <style>
 .v-toolbar {
-  margin-left: 8px;
-  padding-top: 15px;
-  height: 64px !important;
+  padding-top: 14px;
+  height: 74px !important;
   display: block !important;
-}
-
-.v-toolbar__content,
-.v-toolbar__extension {
-  height: 32px !important;
 }
 
 .v-toolbar__extension {
@@ -55,6 +43,10 @@ export default {
 
 .v-input--switch {
   padding-top: 18px !important;
+}
+
+.v-icon {
+  color: #035071 !important;
 }
 
 </style>

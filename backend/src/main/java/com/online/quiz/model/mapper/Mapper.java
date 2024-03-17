@@ -26,4 +26,12 @@ public abstract class Mapper<E, D> {
             .map(this::map)
             .collect(Collectors.toSet());
   }
+
+  public DateTimeFormatter getFormatter() {
+    return formatter;
+  }
+
+  public void setFormatter(DateTimeFormatter formatter) {
+    this.formatter = formatter;
+  }
 }

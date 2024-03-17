@@ -1,5 +1,5 @@
 import {shallowMount} from "@vue/test-utils";
-import Login from "@/components/Login";
+import Login from "@/views/Login.vue";
 
 describe("Login.vue", () => {
   it("should render an enabled login button", async () => {

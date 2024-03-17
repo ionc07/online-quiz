@@ -1,25 +1,14 @@
 <template>
   <div class="statistics-content">
-    <QuantityStatistics/>
-    <v-card
-        elevation="4"
-        class="pb-6"
-    >
-      <div class="line-chart">
-        <v-card-title>Weekly statistics</v-card-title>
-        <LineGraphicStatistics/>
-      </div>
-    </v-card>
+   Dashboard
   </div>
 </template>
 
 <script>
-import QuantityStatistics from "@/components/QuantityStatistics";
-import LineGraphicStatistics from "@/components/LineGraphicStatistics";
 
 export default {
   name: "Dashboard",
-  components: {LineGraphicStatistics, QuantityStatistics},
+  components: {},
   data() {
     return {}
   },
@@ -35,10 +24,6 @@ export default {
   padding-right: 10px;
 }
 
-.line-chart {
-  width: 100%;
-  margin-top: 10px;
-}
 @media only screen and (min-width: 960px) {
   .line-chart {
     width: 50%;

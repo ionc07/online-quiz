@@ -1,34 +1,30 @@
 <template>
   <v-app class="grey lighten-4" v-scroll="onScroll">
-    <div v-if="$store.state.app.auth.loggedIn">
-      <NavBar/>
+    <div v-if="this.$store.state.auth.status.loggedIn">
+      <NavBar />
 
       <v-main name="content">
-        <ToolBar/>
-
+        <ToolBar />
         <div class="app-container">
           <div class="content">
             <router-view></router-view>
           </div>
         </div>
         <v-btn
-            class="scroll-btn"
-            v-scroll="onScroll"
-            v-show="showScrollBtn"
-            fab
-            large
-            dark
-            fixed
-            bottom
-            right
-            @click="toTop"
+          class="scroll-btn"
+          v-scroll="onScroll"
+          v-show="showScrollBtn"
+          fab
+          large
+          dark
+          fixed
+          bottom
+          right
+          @click="toTop"
         >
           <v-icon>mdi-chevron-up</v-icon>
         </v-btn>
       </v-main>
-    </div>
-    <div v-if="!$store.state.app.auth.loggedIn">
-      <Authentication/>
     </div>
   </v-app>
 </template>
@@ -37,10 +33,9 @@
 import NavBar from "./components/NavBar";
 import ToolBar from "./components/ToolBar";
 import "./assets/styles/app.css";
-import Authentication from "@/views/Authentication";
 
 export default {
-  components: {Authentication, NavBar, ToolBar},
+  components: {NavBar, ToolBar },
   name: "App",
   data() {
     return {
@@ -55,9 +50,7 @@ export default {
       });
     },
     onScroll(val) {
-      if (val.target.scrollingElement.scrollTop > 300)
-        this.showScrollBtn = true;
-      else this.showScrollBtn = false;
+      this.showScrollBtn = val.target.scrollingElement.scrollTop > 300;
     }
   }
 };

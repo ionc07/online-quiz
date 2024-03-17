@@ -1,5 +1,4 @@
 <template>
-
   <div class="mt-12">
     <v-card
         elevation="4" class="elevator">
@@ -7,8 +6,6 @@
           :display="displayUserDelete"
           :title="userFullNameToDelete"
           :message="'Do you really want to delete this user?'"
-          @close="closeUserDeleteDialog"
-          @confirm="deleteUser"
       />
       <v-data-table
           :headers="headers"
@@ -17,7 +14,6 @@
           hide-default-footer
           :items-per-page="pageSize"
           :page="page"
-          :custom-sort="customSort"
           :sort-by="sortBy"
           :sort-desc="sortDesc"
           class="mt-8"
@@ -40,18 +36,9 @@
           </v-tooltip>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon class="mr-3 user-action" @click="openUserEditDialog(item.id)"
-          >mdi-account-edit
-          </v-icon
-          >
-          <v-icon
-              class="user-action"
-              @click="
-            openUserDeleteDialog(item.id, item.firstName + ' ' + item.lastName)
-          "
-          >mdi-delete-forever
-          </v-icon
-          >
+          {{item.role}}
+          <v-icon class="mr-3 user-action">mdi-account-edit</v-icon>
+          <v-icon class="user-action">mdi-delete-forever</v-icon>
         </template>
       </v-data-table>
       <div class="text-center pagination inline">
@@ -59,7 +46,6 @@
             :value="page"
             :length="totalPages"
             :total-visible="7"
-            @input="changePage"
         ></v-pagination>
       </div>
       <div class="inline absolute">
@@ -68,7 +54,6 @@
             label="Rows"
             dense
             v-model="pageSize"
-            @change="changePageSize"
         ></v-select>
       </div>
       <div>
@@ -78,7 +63,6 @@
 
 </template>
 <script>
-import api from "../components/backend-api";
 import ConfirmationModal from "../components/modal/ConfirmationModal";
 
 export default {
@@ -106,76 +90,7 @@ export default {
       userFullNameToDelete: ""
     };
   },
-  methods: {
-    changePageSize(pageSize) {
-      this.pageSize = pageSize;
-      localStorage.setItem("users_page_size", pageSize);
-      this.page = 1;
-      this.fetchUsers();
-    },
-    changePage(page) {
-      if (page !== this.page) {
-        this.page = page;
-        this.fetchUsers();
-      }
-    },
-    fetchUsers() {
-      this.$store.state.app.fetchLoading = true;
-      api
-          .getUsers({
-            page: this.page,
-            size: this.pageSize,
-            sortParams: this.sortParams
-          })
-          .then(r => {
-            this.users = r.data.content;
-            this.totalPages = r.data.totalPages;
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth"
-            });
-            this.$store.state.app.fetchLoading = false;
-          });
-    },
-    customSort: function (items, columns, isDesc) {
-      var customSortParams = "";
-      for (let i = 0; i < columns.length; i++) {
-        customSortParams +=
-            "&sort=" + columns[i] + "," + (isDesc[i] ? "DESC" : "ASC");
-      }
-      if (customSortParams !== this.sortParams) {
-        this.sortParams = customSortParams;
-        this.fetchUsers();
-      }
-
-      return this.users;
-    },
-    openUserEditDialog() {
-    },
-    openUserDeleteDialog(userId, userFulName) {
-      this.userIdToDelete = userId;
-      this.userFullNameToDelete = userFulName;
-      this.displayUserDelete = true;
-    },
-    closeUserDeleteDialog() {
-      this.displayUserDelete = false;
-    },
-    deleteUser() {
-      api.deleteUser(this.userIdToDelete).then(() => {
-        this.displayUserDelete = false;
-        this.fetchUsers();
-      });
-    },
-  },
-  beforeMount() {
-    var storedPageSize = localStorage.getItem("users_page_size");
-
-    if (storedPageSize !== null) {
-      this.pageSize = parseInt(storedPageSize);
-    }
-
-    this.fetchUsers();
-  }
+  methods: {}
 };
 </script>
 <style lang="css">

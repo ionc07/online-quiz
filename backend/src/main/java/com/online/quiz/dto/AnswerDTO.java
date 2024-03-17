@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class AnswerDTO {
-  private String answerType;
 
   private String value;
 

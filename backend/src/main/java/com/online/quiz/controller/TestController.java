@@ -26,7 +26,7 @@ public class TestController {
   private final TestService testService;
 
   @PostMapping
-  @Operation(summary = "Creates the quiz")
+  @Operation(summary = "Creates the test")
   public ResponseEntity<?> create(@RequestBody TestDTO testDTO) {
     testService.create(testDTO);
     return new ResponseEntity<>(HttpStatus.CREATED);

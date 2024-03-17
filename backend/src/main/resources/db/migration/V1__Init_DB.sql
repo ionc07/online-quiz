@@ -59,6 +59,7 @@ create table question
     time_limit          integer,
     wait_for_time_limit boolean default false,
     score               integer,
+    answer_type_id      integer not null,
     primary key (id)
 );
 
@@ -72,7 +73,6 @@ create table answer_type
 create table answer
 (
     id             bigserial not null,
-    answer_type_id integer   not null,
     question_id    bigint    not null,
     value          text      not null,
     correct        boolean,
@@ -139,8 +139,10 @@ alter table if exists user_test
 alter table if exists question
     add constraint question_test_fk foreign key (test_id) references test;
 
+alter table if exists question
+    add constraint question_answerType_fk foreign key (answer_type_id) references answer_type;
+
 alter table if exists answer
-    add constraint answer_type_fk foreign key (answer_type_id) references answer_type,
     add constraint question_fk foreign key (question_id) references question;
 
 alter table if exists user_response
