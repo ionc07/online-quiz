@@ -14,4 +14,5 @@ public class TestShortDetailsDTO {
   private String availableFrom;
   private String availableTo;
   private Boolean available;
+  private Integer questionsCount;
 }

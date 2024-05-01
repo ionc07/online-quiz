@@ -1,33 +1,18 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/auth/';
+const API_URL = 'http://localhost:8080/api/tests/';
 
 class TestService {
-  login(user) {
-    return axios
-        .post(API_URL + 'signin', {
-          username: user.username,
-          password: user.password
-        })
-        .then(response => {
-          if (response.data.accessToken) {
-            localStorage.setItem('user', JSON.stringify(response.data));
-          }
-
-          return response.data;
-        });
+  createTest(testData) {
+    return axios.post(API_URL, testData);
   }
 
-  logout() {
-    localStorage.removeItem('user');
+  getTestsForCurrentUser(params) {
+    return axios.get(API_URL + "currentUser/" + params);
   }
 
-  register(user) {
-    return axios.post(API_URL + 'signup', {
-      username: user.username,
-      email: user.email,
-      password: user.password
-    });
+  getAllTests() {
+    return axios.get(API_URL);
   }
 }
 

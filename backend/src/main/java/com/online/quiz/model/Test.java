@@ -1,12 +1,6 @@
 package com.online.quiz.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +21,8 @@ public class Test extends AbstractEntity {
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "test_id")
   private List<Question> questions;
+
+  private Boolean available;
 
   private LocalDateTime createdAt;
 
@@ -80,5 +76,13 @@ public class Test extends AbstractEntity {
   @PrePersist
   public void setCreatedAt() {
     this.createdAt = LocalDateTime.now();
+  }
+
+  public Boolean isAvailable() {
+    return available;
+  }
+
+  public void setAvailable(Boolean available) {
+    this.available = available;
   }
 }

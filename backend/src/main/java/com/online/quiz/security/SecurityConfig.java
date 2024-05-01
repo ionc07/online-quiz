@@ -20,62 +20,61 @@ import static java.lang.String.format;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final UserRepository userRepository;
-  private final JwtTokenFilter jwtTokenFilter;
+    private final UserRepository userRepository;
+    private final JwtTokenFilter jwtTokenFilter;
 
-  @Value("${springdoc.api-docs.path}")
-  private String restApiDocPath;
-  @Value("${springdoc.swagger-ui.path}")
-  private String swaggerPath;
+    @Value("${springdoc.api-docs.path}")
+    private String restApiDocPath;
+    @Value("${springdoc.swagger-ui.path}")
+    private String swaggerPath;
 
-  public SecurityConfig(UserRepository userRepository,
-                        JwtTokenFilter jwtTokenFilter) {
-    super();
+    public SecurityConfig(UserRepository userRepository,
+                          JwtTokenFilter jwtTokenFilter) {
+        super();
 
-    this.userRepository = userRepository;
-    this.jwtTokenFilter = jwtTokenFilter;
-  }
+        this.userRepository = userRepository;
+        this.jwtTokenFilter = jwtTokenFilter;
+    }
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(email -> userRepository
-            .findByEmail(email)
-            .orElseThrow(
-                    () -> new UsernameNotFoundException(
-                            format("User: %s, not found", email)
-                    )
-            ));
-  }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(email -> userRepository
+                .findByEmail(email)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException(
+                                format("User: %s, not found", email)
+                        )
+                ));
+    }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/auth/sign-in").permitAll()
-            .antMatchers(HttpMethod.OPTIONS, "/auth/sign-in").permitAll()
-            .antMatchers(HttpMethod.POST, "/auth/sign-up").permitAll()
-            .antMatchers("/actuator").permitAll()
-            .antMatchers("/actuator/**").permitAll()
-            .antMatchers(format("%s/**", restApiDocPath)).permitAll()
-            .antMatchers(format("%s/**", swaggerPath)).permitAll()
-            .antMatchers(HttpMethod.POST, "/tests").authenticated()
-            .anyRequest().permitAll();
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/auth/sign-in").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/auth/sign-in").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/sign-up").permitAll()
+                .antMatchers("/actuator").permitAll()
+                .antMatchers("/actuator/**").permitAll()
+                .antMatchers(format("%s/**", restApiDocPath)).permitAll()
+                .antMatchers(format("%s/**", swaggerPath)).permitAll()
+                .anyRequest().authenticated();
 
-    http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-  }
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+    }
 
-  @Override
-  @Bean
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
-  }
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }

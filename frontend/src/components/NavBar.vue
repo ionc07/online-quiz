@@ -51,7 +51,13 @@ export default {
           title: "User groups",
           route: "/userGroups"
         },
-        {icon: "mdi-account", title: "Account", route: "/account"}
+        {
+          icon: "mdi-clipboard-text-multiple-outline",
+          title: "Test groups",
+          route: "/testGroups"
+        },
+        {icon: "mdi-account", title: "Account", route: "/account"},
+
       ],
       adminItems: [
         {

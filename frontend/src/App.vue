@@ -1,26 +1,29 @@
 <template>
   <v-app class="grey lighten-4" v-scroll="onScroll">
-    <div v-if="this.$store.state.auth.status.loggedIn">
-      <NavBar />
+    <div>
+      <NavBar v-if="isLoggedIn" />
+      <ToolBar v-if="isLoggedIn" />
 
       <v-main name="content">
-        <ToolBar />
         <div class="app-container">
           <div class="content">
-            <router-view></router-view>
+            <!-- Conditionally render the router view based on user authentication -->
+            <router-view v-if="isLoggedIn"></router-view>
+            <!-- Render Login or Register component if user is not logged in -->
+            <router-view v-else></router-view>
           </div>
         </div>
         <v-btn
-          class="scroll-btn"
-          v-scroll="onScroll"
-          v-show="showScrollBtn"
-          fab
-          large
-          dark
-          fixed
-          bottom
-          right
-          @click="toTop"
+            class="scroll-btn"
+            v-scroll="onScroll"
+            v-show="showScrollBtn"
+            fab
+            large
+            dark
+            fixed
+            bottom
+            right
+            @click="toTop"
         >
           <v-icon>mdi-chevron-up</v-icon>
         </v-btn>
@@ -32,11 +35,17 @@
 <script>
 import NavBar from "./components/NavBar";
 import ToolBar from "./components/ToolBar";
+import { mapState } from "vuex";
 import "./assets/styles/app.css";
 
 export default {
-  components: {NavBar, ToolBar },
+  components: { NavBar, ToolBar },
   name: "App",
+  computed: {
+    ...mapState({
+      isLoggedIn: state => state.auth.status.loggedIn
+    })
+  },
   data() {
     return {
       showScrollBtn: false
@@ -55,22 +64,9 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .scroll-btn {
-  background-color: #001f3f !important;
+  background-color: rgba(152, 218, 245, 0.73) !important;
 }
-
-/*.app-container {*/
-/*  height: 100%;*/
-/*  width: 100%;*/
-/*  padding: 3px;*/
-/*  background: green;*/
-/*  box-shadow: 0 3px 10px #0a0a0a;*/
-/*}*/
-
-/*.content {*/
-/*  height: 100%;*/
-/*  overflow: auto;*/
-/*  background: red;*/
-/*}*/
 </style>

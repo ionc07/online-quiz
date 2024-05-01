@@ -10,5 +10,7 @@ public interface TestService {
 
   PaginationDTO<TestShortDetailsDTO> getAllTests(Pageable pageable);
 
+  PaginationDTO<TestShortDetailsDTO> getTestsForCurrentUser(Pageable pageable);
+
   TestDTO getTest(Long id);
 }

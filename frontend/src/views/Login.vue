@@ -85,15 +85,38 @@
         </v-container>
       </v-form>
     </v-container>
+    <v-snackbar
+        v-model="loginFailed"
+        :timeout="3000"
+        centered
+        top
+        color="error"
+        elevation="24"
+        :multi-line="true"
+    >
+      {{ "The email or password is incorrect!" }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+            text
+            v-bind="attrs"
+            @click="loginFailed = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
+
 export default {
-  name: " Login",
+  name: "Login",
 
   data() {
     return {
+      loginFailed: false,
       valid: false,
       loading: false,
       show: false,
@@ -113,20 +136,19 @@ export default {
       this.$refs.form.validate();
       if (this.valid) {
         this.loading = true;
-        this.$store
-            .dispatch("login", {email: this.email, password: this.password})
+        console.log({email: this.email, password: this.password})
+        this.$store.dispatch('auth/login', {email: this.email, password: this.password})
             .then(() => {
               this.loading = false;
-
               this.$router.push("/");
             })
             .catch(error => {
               console.log("Error to login!");
               console.log(error);
-
-              // this.loginError = true;
-              // this.errors.push(error);
-              // this.error = true;
+              console.log(error.response)
+              if (error.response.status === 400) {
+                this.loginFailed = true;
+              }
               this.loading = false;
             });
       }

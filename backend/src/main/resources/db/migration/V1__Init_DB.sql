@@ -20,12 +20,13 @@ create table users
 
 create table test
 (
-    id          bigserial    not null,
-    title       varchar(255) not null,
+    id          bigserial            not null,
+    title       varchar(255)         not null,
     description varchar(1024),
     user_id     bigint,
     created_at  timestamp,
-    settings_id bigint       not null,
+    settings_id bigint               not null,
+    available boolean default true not null,
     primary key (id)
 );
 
@@ -59,7 +60,7 @@ create table question
     time_limit          integer,
     wait_for_time_limit boolean default false,
     score               integer,
-    answer_type_id      integer not null,
+    answer_type_id      integer   not null,
     primary key (id)
 );
 
@@ -72,11 +73,11 @@ create table answer_type
 
 create table answer
 (
-    id             bigserial not null,
-    question_id    bigint    not null,
-    value          text      not null,
-    correct        boolean,
-    score          integer,
+    id          bigserial not null,
+    question_id bigint    not null,
+    value       text      not null,
+    correct     boolean,
+    score       integer,
     primary key (id)
 );
 

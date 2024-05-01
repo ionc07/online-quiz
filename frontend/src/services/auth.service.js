@@ -6,12 +6,15 @@ class AuthService {
   login(user) {
     return axios
         .post(API_URL + 'sign-in', {
-          username: user.username,
+          email: user.email,
           password: user.password
         })
         .then(response => {
-          if (response.data.accessToken) {
-            localStorage.setItem('user', JSON.stringify(response.data));
+          console.log(response);
+          if (response.status === 200) {
+            const userRoleAndToken = response.data;
+            userRoleAndToken.accessToken = 'Bearer ' + response.headers.authorization;
+            localStorage.setItem('user', JSON.stringify(userRoleAndToken));
           }
 
           return response.data;

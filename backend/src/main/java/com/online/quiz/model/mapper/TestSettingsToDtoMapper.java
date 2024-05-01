@@ -10,7 +10,7 @@ public class TestSettingsToDtoMapper extends Mapper<TestSettings, TestSettingsDT
   public TestSettingsDTO map(TestSettings entity) {
     return TestSettingsDTO.builder()
             .availableFrom(entity.getAvailableFrom().format(formatter))
-            .availableTo(entity.getAvailableTo().format(formatter))
+            .availableTo((entity.getAvailableTo() != null ? entity.getAvailableTo().format(formatter) : null))
             .chatEnabled(entity.isChatEnabled())
             .maxAttempts(entity.getMaxAttempts())
             .timeLimit(entity.getTimeLimit())

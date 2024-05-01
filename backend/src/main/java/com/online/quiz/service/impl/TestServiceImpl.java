@@ -1,17 +1,10 @@
 package com.online.quiz.service.impl;
 
-import com.online.quiz.dto.AnswerDTO;
-import com.online.quiz.dto.QuestionDTO;
-import com.online.quiz.dto.TestDTO;
-import com.online.quiz.dto.TestSettingsDTO;
-import com.online.quiz.dto.TestShortDetailsDTO;
+import com.online.quiz.dto.*;
 import com.online.quiz.dto.pagination.PaginationDTO;
-import com.online.quiz.model.Answer;
-import com.online.quiz.model.AnswerType;
-import com.online.quiz.model.Question;
-import com.online.quiz.model.Test;
-import com.online.quiz.model.TestSettings;
+import com.online.quiz.model.*;
 import com.online.quiz.model.mapper.Mapper;
+import com.online.quiz.projection.UserDetails;
 import com.online.quiz.repository.AnswerRepository;
 import com.online.quiz.repository.QuestionRepository;
 import com.online.quiz.repository.TestRepository;
@@ -48,11 +41,18 @@ public class TestServiceImpl implements TestService {
 
     TestSettings testSettings = new TestSettings();
 
-    testSettings.setAvailableFrom(LocalDateTime.parse(testSettingsDTO.getAvailableFrom(), testToDTOMapper.getFormatter()));
-    testSettings.setAvailableTo(LocalDateTime.parse(testSettingsDTO.getAvailableTo(), testToDTOMapper.getFormatter()));
+    if (testSettingsDTO.getAvailableFrom() != null) {
+      testSettings.setAvailableFrom(LocalDateTime.parse(testSettingsDTO.getAvailableFrom(), testToDTOMapper.getFormatter()));
+    }
+    if (testSettingsDTO.getAvailableTo() != null) {
+      testSettings.setAvailableTo(LocalDateTime.parse(testSettingsDTO.getAvailableTo(), testToDTOMapper.getFormatter()));
+    }
     testSettings.setChatEnabled(testSettingsDTO.getChatEnabled());
     testSettingsDTO.setMaxAttempts(testSettingsDTO.getMaxAttempts());
-    testSettings.setTimeLimit(testSettingsDTO.getTimeLimit());
+
+    if (testSettingsDTO.getMaxAttempts() != null) {
+      testSettings.setTimeLimit(testSettingsDTO.getTimeLimit());
+    }
 
     testSettings = testSettingsRepository.save(testSettings);
 
@@ -98,9 +98,16 @@ public class TestServiceImpl implements TestService {
   @Override
   public PaginationDTO<TestShortDetailsDTO> getAllTests(Pageable pageable) {
     Page<Test> testsPage = testRepository.findAllBy(pageable);
-    PaginationDTO<TestShortDetailsDTO> paginationDTO = new PaginationDTO<>(testShortDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
 
-    return paginationDTO;
+    return new PaginationDTO<>(testShortDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
+  }
+
+  @Override
+  public PaginationDTO<TestShortDetailsDTO> getTestsForCurrentUser(Pageable pageable) {
+    UserDetails currentUser = userService.getCurrentUser();
+    Page<Test> testsPage = testRepository.findAllByUserId(pageable, currentUser.getId());
+
+    return new PaginationDTO<>(testShortDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
   }
 
   @Override

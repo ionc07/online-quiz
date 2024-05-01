@@ -148,7 +148,7 @@ import {validationMixin} from 'vuelidate'
 import {email, maxLength, minLength, required} from 'vuelidate/lib/validators'
 
 export default {
-  name: " Register",
+  name: "Register",
 
   mixins: [validationMixin],
   validations: {

@@ -10,7 +10,7 @@ public abstract class Mapper<E, D> {
   public DateTimeFormatter formatter;
 
   public Mapper() {
-    formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
   }
 
   public abstract D map(E entity);

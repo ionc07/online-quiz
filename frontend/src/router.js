@@ -74,29 +74,25 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // if (to.matched.some(record => record.meta.requiresAuth)) {
-  // this route requires auth, check if logged in
-  // if not, redirect to login page.
-
-  // redirect to login page if not logged in and trying to access a restricted page
-  // const publicPages = ["/login"];
-  // const authRequired = !publicPages.includes(to.path);
-  // const loggedIn = localStorage.getItem("user");
-
-  const requiresAuth = to.matched.some((x) => x.meta.requiresAuth);
-  const requiresGuest = to.matched.some((x) => x.meta.requiresGuest);
   const isLoggedIn = store.state.auth.status.loggedIn;
-  console.log(router);
-  console.log(store.state);
-  console.log("requiresAuth: " + requiresAuth);
-  console.log("requiresGuest: " + requiresGuest);
-  console.log("isLoggedIn: " + isLoggedIn)
-  if (requiresAuth && !isLoggedIn) {
-    return next("/login");
-  } else if (requiresGuest && to.name === "Login") {
-    return next("/tests");
+  console.log(store.state)
+  console.log(`isLoggedIn[${isLoggedIn}]`);
+  // Allow access to Login and Register pages if user is not logged in
+  if (!isLoggedIn && (to.name === 'Login' || to.name === 'Register')) {
+    return next();
+  }
+
+  // Redirect to Tests page if user is logged in and trying to access Login or Register pages
+  if (isLoggedIn && (to.name === 'Login' || to.name === 'Register')) {
+    return next('/tests');
+  }
+
+  // For other routes, ensure authentication if required
+  if (to.meta.requiresAuth && !isLoggedIn) {
+    return next('/login');
   }
 
   next();
 });
+
 export default router;

@@ -11,12 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tests")
@@ -36,6 +31,12 @@ public class TestController {
   @Operation(summary = "Returns all tests")
   public ResponseEntity<PaginationDTO<TestShortDetailsDTO>> getAll(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
     return new ResponseEntity<>(testService.getAllTests(pageable), HttpStatus.OK);
+  }
+
+  @GetMapping("/currentUser")
+  @Operation(summary = "Returns all tests by current user")
+  public ResponseEntity<PaginationDTO<TestShortDetailsDTO>> getAllForCurrentUser(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    return new ResponseEntity<>(testService.getTestsForCurrentUser(pageable), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
