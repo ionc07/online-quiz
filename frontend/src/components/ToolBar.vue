@@ -9,6 +9,18 @@
         slot="extension"
         :indeterminate="true"
     />
+    <v-spacer></v-spacer>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon @click="logOut"
+               v-bind="attrs"
+               v-on="on">
+          <v-icon>mdi-export</v-icon>
+        </v-btn>
+      </template>
+      <span>Logout</span>
+    </v-tooltip>
+
   </v-toolbar>
 </template>
 <script>
@@ -18,6 +30,10 @@ export default {
     admin: false
   }),
   methods: {
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    }
   }
 }
 </script>
