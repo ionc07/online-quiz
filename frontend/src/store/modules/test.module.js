@@ -17,6 +17,18 @@ export const test = {
           }
       );
     },
+    deleteTests({commit}, testIds) {
+      return TestService.deleteTests(testIds).then(
+          response => {
+            commit('testsDeletionSuccess');
+            return Promise.resolve(response.data);
+          },
+          error => {
+            commit('testsDeletionFailure');
+            return Promise.reject(error);
+          }
+      );
+    },
     getTestsForCurrentUser({commit}, params) {
       return TestService.getTestsForCurrentUser(params).then(
           response => {
@@ -42,6 +54,10 @@ export const test = {
     testCreationSuccess(state) {
     },
     testCreationFailure(state) {
+    },
+    testsDeletionSuccess(state) {
+    },
+    testsDeletionFailure(state) {
     }
   }
 };

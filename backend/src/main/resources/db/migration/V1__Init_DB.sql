@@ -26,7 +26,7 @@ create table test
     user_id     bigint,
     created_at  timestamp,
     settings_id bigint               not null,
-    available boolean default true not null,
+    available   boolean default true not null,
     primary key (id)
 );
 
@@ -101,28 +101,26 @@ create table chat_message
     primary key (id)
 );
 
-create table groups
+create table test_group
 (
-    id    serial       not null,
-    title varchar(150) not null,
+    id      serial,
+    name    varchar not null,
+    user_id bigint,
     primary key (id)
 );
 
-create table test_group
+create table test_group_test
 (
-    id       serial  not null,
-    group_id integer not null,
-    test_id  bigint  not null
+    test_group_id bigint not null,
+    test_id       biging not null
 );
 
 create table user_group
 (
-    id       serial  not null,
-    group_id integer not null,
-    user_id  bigint  not null,
+    id   serial not null,
+    name varchar,
     primary key (id)
 );
-
 
 alter table if exists users
     add constraint user_role_fk foreign key (role_id) references role;
@@ -158,6 +156,9 @@ alter table if exists test_group
 
 alter table if exists test_group
     add constraint test_group_test_fk foreign key (test_id) references test;
+alter table test_group
+    add constraint test_group_users__fk
+        foreign key (user_id) references users (id);
 
 alter table if exists user_group
     add constraint group_fk foreign key (group_id) references groups;

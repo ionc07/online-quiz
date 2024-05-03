@@ -5,7 +5,6 @@ import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.dto.UserUpdateDTO;
 import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.model.User;
-import com.online.quiz.projection.UserDetails;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
@@ -15,7 +14,7 @@ public interface UserService {
 
   void update(UserUpdateDTO userUpdateDTO);
 
-  UserDetails getCurrentUser();
+  User getCurrentUser();
 
   PaginationDTO<UserDTO> getAll(Pageable pageable);
 

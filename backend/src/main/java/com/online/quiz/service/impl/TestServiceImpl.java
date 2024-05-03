@@ -4,7 +4,6 @@ import com.online.quiz.dto.*;
 import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.model.*;
 import com.online.quiz.model.mapper.Mapper;
-import com.online.quiz.projection.UserDetails;
 import com.online.quiz.repository.AnswerRepository;
 import com.online.quiz.repository.QuestionRepository;
 import com.online.quiz.repository.TestRepository;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +62,7 @@ public class TestServiceImpl implements TestService {
     test.setDescription(testDTO.getDescription());
     test.setTitle(testDTO.getTitle());
     test.setSettings(testSettings);
+    test.setAvailable(true);
     test = testRepository.save(test);
 
     // Questions mapping
@@ -104,7 +105,7 @@ public class TestServiceImpl implements TestService {
 
   @Override
   public PaginationDTO<TestShortDetailsDTO> getTestsForCurrentUser(Pageable pageable) {
-    UserDetails currentUser = userService.getCurrentUser();
+    User currentUser = userService.getCurrentUser();
     Page<Test> testsPage = testRepository.findAllByUserId(pageable, currentUser.getId());
 
     return new PaginationDTO<>(testShortDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
@@ -115,6 +116,13 @@ public class TestServiceImpl implements TestService {
     Test test = testRepository.findTestById(id);
 
     return testToDTOMapper.map(test);
+  }
+
+  @Override
+  public void deleteTests(List<Long> testIds) {
+    if (!testIds.isEmpty()) {
+      testIds.forEach(testRepository::deleteById);
+    }
   }
 
 }

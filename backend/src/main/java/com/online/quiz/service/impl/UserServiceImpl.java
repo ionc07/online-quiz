@@ -9,7 +9,6 @@ import com.online.quiz.exception.WrongResetCodeException;
 import com.online.quiz.mail.EmailService;
 import com.online.quiz.model.User;
 import com.online.quiz.model.mapper.Mapper;
-import com.online.quiz.projection.UserDetails;
 import com.online.quiz.repository.UserRepository;
 import com.online.quiz.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -82,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional(readOnly = true)
-  public UserDetails getCurrentUser() {
+  public User getCurrentUser() {
     return userRepository.findUserByEmail(getCurrentUserEmail());
   }
 

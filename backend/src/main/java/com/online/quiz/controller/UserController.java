@@ -4,6 +4,7 @@ import com.online.quiz.dto.UserDTO;
 import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.dto.UserUpdateDTO;
 import com.online.quiz.dto.pagination.PaginationDTO;
+import com.online.quiz.model.User;
 import com.online.quiz.projection.UserDetails;
 import com.online.quiz.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,10 +41,10 @@ public class UserController {
 
   @GetMapping("/current")
   @Operation(summary = "Get the user that is currently logged in the system")
-  public ResponseEntity<UserDetails> getCurrentUser() {
-    UserDetails userDetails = userService.getCurrentUser();
+  public ResponseEntity<User> getCurrentUser() {
+    User user = userService.getCurrentUser();
 
-    return new ResponseEntity<>(userDetails, HttpStatus.OK);
+    return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
   @PostMapping("/password/verification")

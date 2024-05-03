@@ -272,7 +272,7 @@
         elevation="24"
         :multi-line="true"
     >
-      {{ "Failed to save the test!" }}
+      {{ "Failed to create the test!" }}
 
       <template v-slot:action="{ attrs }">
         <v-btn
@@ -427,11 +427,9 @@ export default {
             console.log(Response);
           })
           .catch(error => {
-            this.creationSuccess = false;
+            this.creationFailure = true;
             this.creationLoading = false;
             console.log(error);
-            // this.registerError = true;
-            // this.errors.push(error);
           });
     }
   }
