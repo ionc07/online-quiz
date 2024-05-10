@@ -7,13 +7,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -30,6 +28,14 @@ public class User extends AbstractEntity implements UserDetails {
   private String email;
 
   private String password;
+
+  @ManyToMany
+  @JoinTable(
+          name = "user_shared_test",
+          joinColumns = @JoinColumn(name = "user_id"),
+          inverseJoinColumns = @JoinColumn(name = "test_id")
+  )
+  private List<Test> tests = new ArrayList<>();
 
   private LocalDateTime createdAt;
 
@@ -51,6 +57,22 @@ public class User extends AbstractEntity implements UserDetails {
     Collection<GrantedAuthority> roles = new ArrayList<>();
     roles.add(new SimpleGrantedAuthority(role.getName()));
     return roles;
+  }
+
+  public List<Test> getTests() {
+    return tests;
+  }
+
+  public void setTests(List<Test> tests) {
+    this.tests = tests;
+  }
+
+  public void addTests(List<Test> tests) {
+    this.tests.addAll(tests);
+  }
+
+  public void addTest(Test test) {
+    this.tests.add(test);
   }
 
   @Override

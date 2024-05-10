@@ -7,8 +7,8 @@ import java.util.List;
 
 @Data
 @Builder
-public class GroupDTO {
-  private String title;
-  private List<Long> tests;
-  private List<Long> users;
+public class UserGroupDTO {
+  private Long id;
+  private String name;
+  private List<UserShortDetailsDTO> users;
 }

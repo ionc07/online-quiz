@@ -1,10 +1,11 @@
 package com.online.quiz.controller;
 
 import com.online.quiz.dto.TestDTO;
-import com.online.quiz.dto.TestShortDetailsDTO;
+import com.online.quiz.dto.TestDetailsDTO;
 import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.service.TestService;
 import io.swagger.v3.oas.annotations.Operation;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,14 +32,19 @@ public class TestController {
 
   @GetMapping
   @Operation(summary = "Returns all tests")
-  public ResponseEntity<PaginationDTO<TestShortDetailsDTO>> getAll(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+  public ResponseEntity<PaginationDTO<TestDetailsDTO>> getAll(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
     return new ResponseEntity<>(testService.getAllTests(pageable), HttpStatus.OK);
   }
 
   @GetMapping("/currentUser")
   @Operation(summary = "Returns all tests by current user")
-  public ResponseEntity<PaginationDTO<TestShortDetailsDTO>> getAllForCurrentUser(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+  public ResponseEntity<PaginationDTO<TestDetailsDTO>> getTestsForCurrentUser(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
     return new ResponseEntity<>(testService.getTestsForCurrentUser(pageable), HttpStatus.OK);
+  }
+
+  @GetMapping("/currentUser/shared")
+  public ResponseEntity<PaginationDTO<TestDetailsDTO>> getSharedTestsForCurrentUser(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) throws NotFoundException {
+    return new ResponseEntity<>(testService.getSharedTestsForCurrentUser(pageable), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")

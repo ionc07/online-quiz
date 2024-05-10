@@ -2,8 +2,24 @@
   <v-container>
     <v-row class="mt-1">
       <v-col>
-
-
+        <v-dialog v-model="shareDialog" max-width="500">
+          <template v-slot:activator="{ on }">
+            <v-btn color="primary" dark v-on="on">Share Test Group</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              Share Test Group
+            </v-card-title>
+            <v-card-text>
+              <v-text-field v-model="email" label="User Email"></v-text-field>
+              <v-select v-model="userGroup" :items="userGroups" label="User Group"></v-select>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="blue darken-1" text @click="shareTestGroup">Share</v-btn>
+              <v-btn color="blue darken-1" text @click="shareDialog = false; email='';userGroup=null">Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <v-dialog
             v-model="createTestGroupDialog"
             persistent
@@ -55,10 +71,113 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+        <v-dialog
+            v-model="updateTestGroupDialog"
+            persistent
+            max-width="600px"
+        >
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Update test group</span>
+            </v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col
+                    cols="12"
+                >
+                  <v-text-field
+                      label="Test group name"
+                      required
+                      v-model="updatedTestGroup.name"
+                  ></v-text-field>
+                </v-col>
+
+              </v-row>
+              <v-row justify="center">
+                <v-card-text v-if="updatedTestGroup.tests.length === 0">No tests have been addet yet to this test
+                  group
+                </v-card-text>
+                <v-simple-table v-else height="300px">
+                  <template v-slot:default>
+                    <thead>
+                    <tr>
+                      <th class="text-left">
+                        Test title
+                      </th>
+                      <th class="text-left">
+                        Remove from test group
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr
+                        v-for="(test, index) in updatedTestGroup.tests"
+                        :key="test.id"
+                    >
+                      <td>{{ test.title }}</td>
+                      <td class="text-right">
+                        <v-btn icon color="error" @click="updatedTestGroup.tests.splice(index, 1)">
+                          <v-icon color="error">mdi-minus-circle</v-icon>
+                        </v-btn>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </v-row>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="updateTestGroupDialog = false"
+              >
+                Close
+              </v-btn>
+              <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="updateTestGroup"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
       </v-col>
     </v-row>
 
     <v-row>
+      <v-dialog
+          v-model="deleteDialog"
+          persistent
+          max-width="290"
+      >
+        <v-card>
+          <v-card-title class="text-h6">
+            Are you sure?
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="red"
+                text
+                @click="deleteDialog = false"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+                color="error"
+                @click="deleteTestGroup"
+            >
+              Yes
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-col cols="4" v-for="(testGroupData) in this.data">
         <v-card
             outlined
@@ -68,12 +187,13 @@
               <v-list-item-title class="text-h6 mb-1">
                 {{ testGroupData.name }}
                 <v-btn
+                    @click=" updatedTestGroup = testGroupData; updateTestGroupDialog = true"
                     icon
                 >
                   <v-icon color="black">mdi-square-edit-outline</v-icon>
                 </v-btn>
               </v-list-item-title>
-              <v-list-item-subtitle class="text">Tests: {{ testGroupData.testsCount }}</v-list-item-subtitle>
+              <v-list-item-subtitle class="text">Tests: {{ testGroupData.tests.length }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-card-actions>
@@ -88,43 +208,9 @@
                 </v-btn>
               </v-col>
               <v-col cols="auto" align-self="end">
-                <v-dialog
-                    v-model="deleteDialog"
-                    persistent
-                    max-width="290"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        v-bind="attrs" v-on="on"
-                        rounded
-                        color="error"
-                        @click="deleteDialog = false"
-                    >
-                      <v-icon color="white">mdi-delete</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title class="text-h6">
-                      Are you sure you want to delete the selected tests?
-                    </v-card-title>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                          color="red"
-                          text
-                          @click="deleteDialog = false"
-                      >
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                          color="error"
-                          @click="deleteTestGroup(testGroupData.id)"
-                      >
-                        Yes
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+                <v-btn rounded @click="testGroupIdToDelete = testGroupData.id; deleteDialog = true" color="error">
+                  <v-icon color="white">mdi-delete</v-icon>
+                </v-btn>
 
               </v-col>
             </v-row>
@@ -139,11 +225,18 @@
 export default {
   data() {
     return {
+      updatedTestGroup: {tests: []},
+      updateTestGroupDialog: null,
       deleteDialog: false,
       createLoading: false,
       newTestGroupName: null,
+      testGroupIdToDelete: null,
       createTestGroupDialog: false,
       data: [],
+      shareDialog: false,
+      email: '',
+      userGroup: null,
+      userGroups: ['User Group 1', 'User Group 2', 'User Group 3'] // Example user groups
     };
   },
   methods: {
@@ -165,12 +258,30 @@ export default {
         this.fetchTestGroups();
       })
     },
-    renameGroup(id) {
-      // Implement renaming group functionality
+    updateTestGroup() {
+      this.$store.dispatch("testGroup/updateTestGroup", this.updatedTestGroup).then(() => {
+        this.fetchTestGroups();
+      })
+      this.updateTestGroupDialog = false;
     },
-    deleteTestGroup(id) {
-      this.$store.dispatch("testGroup/deleteTestGroup", id);
-      this.fetchTestGroups();
+    shareTestGroup() {
+      // Implement logic to share test group with user by email or user group
+      console.log('Sharing Test Group');
+      console.log('Email:', this.email);
+      console.log('User Group:', this.userGroup);
+
+
+      // Reset fields and close dialog
+      this.email = '';
+      this.userGroup = null;
+      this.shareDialog = false;
+    },
+    deleteTestGroup() {
+      console.log("delete by id: " + this.testGroupIdToDelete);
+      this.$store.dispatch("testGroup/deleteTestGroup", this.testGroupIdToDelete).then(() => {
+        this.fetchTestGroups();
+      });
+      this.deleteDialog = false
     },
   },
   mounted() {

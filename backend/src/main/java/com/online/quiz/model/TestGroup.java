@@ -1,8 +1,8 @@
 package com.online.quiz.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class TestGroup extends AbstractEntity {
@@ -12,11 +12,11 @@ public class TestGroup extends AbstractEntity {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToMany
+  @OneToMany
   @JoinTable(name = "test_group_test",
           joinColumns = @JoinColumn(name = "test_group_id"),
           inverseJoinColumns = @JoinColumn(name = "test_id"))
-  private Set<Test> tests = new HashSet<>();
+  private List<Test> tests = new ArrayList<>();
 
   public TestGroup() {
 
@@ -30,11 +30,11 @@ public class TestGroup extends AbstractEntity {
     this.name = name;
   }
 
-  public Set<Test> getTests() {
+  public List<Test> getTests() {
     return tests;
   }
 
-  public void setTests(Set<Test> tests) {
+  public void setTests(List<Test> tests) {
     this.tests = tests;
   }
 

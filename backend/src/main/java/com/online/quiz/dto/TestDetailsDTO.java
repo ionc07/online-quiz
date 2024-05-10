@@ -3,11 +3,9 @@ package com.online.quiz.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
-public class TestShortDetailsDTO {
+public class TestDetailsDTO {
   private Long id;
   private String title;
   private String creatorName;
@@ -15,4 +13,5 @@ public class TestShortDetailsDTO {
   private String availableTo;
   private Boolean available;
   private Integer questionsCount;
+  private String testGroupName;
 }

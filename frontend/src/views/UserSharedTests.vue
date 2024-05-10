@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <div>
+      Shared tests
       <v-row class="mb-1 mt-1">
         <v-col>
           <v-dialog
@@ -202,7 +203,7 @@ export default {
       }
       console.log(pageParam + sortParam);
       this.loading = true
-      this.$store.dispatch("test/getTestsForCurrentUser", pageParam + sortParam).then(data => {
+      this.$store.dispatch("test/getSharedTestsForCurrentUser", pageParam + sortParam).then(data => {
         console.log(data);
         this.data = data;
         this.loading = false

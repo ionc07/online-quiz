@@ -22,6 +22,12 @@ public class Test extends AbstractEntity {
   @JoinColumn(name = "test_id")
   private List<Question> questions;
 
+  @ManyToOne
+  @JoinTable(name = "test_group_test",
+          joinColumns = @JoinColumn(name = "test_id"),
+          inverseJoinColumns = @JoinColumn(name = "test_group_id"))
+  private TestGroup testGroup;
+
   private Boolean available;
 
   private LocalDateTime createdAt;
@@ -65,6 +71,18 @@ public class Test extends AbstractEntity {
     return questions;
   }
 
+  public TestGroup getTestGroup() {
+    return testGroup;
+  }
+
+  public void setTestGroup(TestGroup testGroup) {
+    this.testGroup = testGroup;
+  }
+
+  public Boolean getAvailable() {
+    return available;
+  }
+
   public void setQuestions(List<Question> questions) {
     this.questions = questions;
   }
@@ -85,4 +103,6 @@ public class Test extends AbstractEntity {
   public void setAvailable(Boolean available) {
     this.available = available;
   }
+
+
 }

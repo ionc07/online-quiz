@@ -1,11 +1,11 @@
-import TestGroups from "@/services/testGroups.service";
+import UserGroups from "@/services/userGroups.service";
 
 
-export const testGroup = {
+export const userGroup = {
   namespaced: true,
   actions: {
-    createTestGroup({commit}, testGroupData) {
-      return TestGroups.createTestGroup(testGroupData).then(
+    createUserGroup({commit}, userGroupData) {
+      return UserGroups.createUserGroup(userGroupData).then(
           response => {
             return Promise.resolve(response.data);
           },
@@ -14,8 +14,8 @@ export const testGroup = {
           }
       );
     },
-    deleteTestGroup({commit}, testGroupId) {
-      return TestGroups.deleteTestGroup(testGroupId).then(
+    deleteUserGroup({commit}, userGroupId) {
+      return UserGroups.deleteUserGroup(userGroupId).then(
           response => {
             return Promise.resolve(response.data);
           },
@@ -24,8 +24,8 @@ export const testGroup = {
           }
       );
     },
-    getAllTestGroups({commit}) {
-      return TestGroups.getAllTestGroups().then(
+    getAllUserGroups({commit}) {
+      return UserGroups.getAllUserGroups().then(
           response => {
             return Promise.resolve(response.data);
           },
@@ -34,8 +34,8 @@ export const testGroup = {
           }
       );
     },
-    updateTestGroup({commit}, testGroupData) {
-      return TestGroups.updateTestGroup(testGroupData).then(
+    updateUserGroup({commit}, userGroupData) {
+      return UserGroups.updateUserGroup(userGroupData).then(
           response => {
             return Promise.resolve(response.data);
           },
@@ -44,8 +44,8 @@ export const testGroup = {
           }
       );
     },
-    moveTestsToGroup({commit}, testGroupData) {
-      return TestGroups.moveTestsToGroup(testGroupData.testGroupId, testGroupData.testIds).then(
+    moveUsersToGroup({commit}, userGroupData) {
+      return UserGroups.moveUsersToGroup(userGroupData.userGroupId, userGroupData.userIds).then(
           response => {
             return Promise.resolve(response.data);
           },

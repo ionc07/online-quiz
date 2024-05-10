@@ -39,8 +39,18 @@ export const test = {
           }
       );
     },
+    getSharedTestsForCurrentUser({commit}, params) {
+      return TestService.getSharedTestsForCurrentUser(params).then(
+          response => {
+            return Promise.resolve(response.data);
+          },
+          error => {
+            return Promise.reject(error);
+          }
+      );
+    },
     getAllTests({commit}) {
-      return TestService.getTests().then(
+      return TestService.getAllTests().then(
           response => {
             return Promise.resolve(response.data);
           },

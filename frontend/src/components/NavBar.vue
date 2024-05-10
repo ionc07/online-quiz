@@ -16,21 +16,47 @@
       <v-divider></v-divider>
 
       <v-list nav class="pl-0 pr-0">
-        <v-list-item
-            v-for="item in getNavLinks()"
-            :key="item.title"
-            link
-            :to="item.route"
-            v-ripple="{ class: `white--text` }"
-        >
-          <v-list-item-icon>
-            <v-icon size="30px">{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+        <div v-for="link in getNavLinks()">
+          <v-list-item
+              v-if="!link.subLinks"
+              :key="link.text"
+              link
+              :to="link.to"
+              v-ripple="{ class: `white--text` }"
+          >
+            <v-list-item-icon>
+              <v-icon size="30px">{{ link.icon }}</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-title>
-            {{ item.title }}
-          </v-list-item-title>
-        </v-list-item>
+            <v-list-item-title>
+              {{ link.text }}
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-group
+              v-else
+              no-action
+              :prepend-icon="link.icon"
+              :value="false"
+          >
+            <template v-slot:activator>
+                <v-list-item-title class="list-group-text">{{link.text}}</v-list-item-title>
+            </template>
+
+            <v-list-item
+                v-for="sublink in link.subLinks"
+                :to="sublink.to"
+                :key="sublink.text"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ sublink.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ sublink.text }}</v-list-item-title>
+
+            </v-list-item>
+
+          </v-list-group>
+        </div>
       </v-list>
     </v-navigation-drawer>
   </nav>
@@ -43,34 +69,46 @@ export default {
   data() {
     return {
       drawer: true,
-      items: [
-        {icon: "mdi-plus-circle", title: "Create test", route: "/createTest"},
-        {icon: "mdi-school", title: "My tests", route: "/tests"},
+      links: [
+        {icon: "mdi-plus-circle", text: "Create test", to: "/createTest"},
+        {
+          icon: "mdi-school", text: "Tests",
+          subLinks: [
+            {
+              text: 'My Tests',
+              to: '/myTests',
+            },
+            {
+              text: 'Shared tests',
+              to: '/sharedTests',
+            },
+          ]
+        },
         {
           icon: "mdi-account-supervisor-circle",
-          title: "User groups",
-          route: "/userGroups"
+          text: "User groups",
+          to: "/userGroups"
         },
         {
           icon: "mdi-clipboard-text-multiple-outline",
-          title: "Test groups",
-          route: "/testGroups"
+          text: "Test groups",
+          to: "/testGroups"
         },
-        {icon: "mdi-account", title: "Account", route: "/account"},
+        {icon: "mdi-account", text: "Account", to: "/account"},
 
       ],
       adminItems: [
         {
           icon: "mdi-view-dashboard",
-          title: "Dashboard",
-          route: "/dashboard"
+          text: "Dashboard",
+          to: "/dashboard"
         },
         {
           icon: "mdi-account-multiple",
-          title: "Manage users",
-          route: "/users"
+          text: "Manage users",
+          to: "/users"
         },
-        {icon: "mdi-account", title: "Account", route: "/account"}
+        {icon: "mdi-account", text: "Account", to: "/account"}
       ]
     };
   },
@@ -79,15 +117,9 @@ export default {
       if (this.$store.state.admin) {
         return this.adminItems;
       } else {
-        return this.items;
+        return this.links;
       }
     },
-    navLinkClick(title, route) {
-      if (title !== "Logout") {
-        this.$store.state.app.activeRoute = title;
-        this.$router.history.push(route);
-      }
-    }
   }
 };
 </script>
@@ -115,9 +147,12 @@ nav {
   color: #ffffff !important;
 }
 
-.v-list-item .v-list-item__icon i {
-  margin-left: 5px;
-  color: #035071 !important;
+.list-group-text {
+  color: #212121 !important;
+}
+
+.v-list-group__items a{
+  padding-left: 30px !important;
 }
 
 .line {

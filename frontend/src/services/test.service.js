@@ -16,6 +16,10 @@ class TestService {
     return axios.get(API_URL + "/currentUser/" + params);
   }
 
+  getSharedTestsForCurrentUser(params) {
+    return axios.get(API_URL + "/currentUser/shared/" + params);
+  }
+
   getAllTests() {
     return axios.get(API_URL);
   }

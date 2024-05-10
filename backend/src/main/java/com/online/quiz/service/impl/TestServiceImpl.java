@@ -4,19 +4,19 @@ import com.online.quiz.dto.*;
 import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.model.*;
 import com.online.quiz.model.mapper.Mapper;
-import com.online.quiz.repository.AnswerRepository;
-import com.online.quiz.repository.QuestionRepository;
-import com.online.quiz.repository.TestRepository;
-import com.online.quiz.repository.TestSettingsRepository;
+import com.online.quiz.repository.*;
 import com.online.quiz.service.TestService;
 import com.online.quiz.service.UserService;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,10 +28,11 @@ public class TestServiceImpl implements TestService {
   private final QuestionRepository questionRepository;
   private final AnswerRepository answerRepository;
 
-  private final Mapper<Test, TestShortDetailsDTO> testShortDetailsDTOMapper;
+  private final Mapper<Test, TestDetailsDTO> testDetailsDTOMapper;
   private final Mapper<Test, TestDTO> testToDTOMapper;
 
   private final UserService userService;
+  private final UserRepository userRepository;
 
   @Transactional
   @Override
@@ -97,18 +98,27 @@ public class TestServiceImpl implements TestService {
   }
 
   @Override
-  public PaginationDTO<TestShortDetailsDTO> getAllTests(Pageable pageable) {
+  public PaginationDTO<TestDetailsDTO> getAllTests(Pageable pageable) {
     Page<Test> testsPage = testRepository.findAllBy(pageable);
 
-    return new PaginationDTO<>(testShortDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
+    return new PaginationDTO<>(testDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
   }
 
   @Override
-  public PaginationDTO<TestShortDetailsDTO> getTestsForCurrentUser(Pageable pageable) {
+  public PaginationDTO<TestDetailsDTO> getTestsForCurrentUser(Pageable pageable) {
     User currentUser = userService.getCurrentUser();
     Page<Test> testsPage = testRepository.findAllByUserId(pageable, currentUser.getId());
 
-    return new PaginationDTO<>(testShortDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
+    return new PaginationDTO<>(testDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
+  }
+
+  @Override
+  public PaginationDTO<TestDetailsDTO> getSharedTestsForCurrentUser(Pageable pageable) throws NotFoundException {
+    User currentUser = userService.getCurrentUser();
+    User user = userRepository.findById(currentUser.getId())
+            .orElseThrow(() -> new NotFoundException("User not found"));
+    Page<Test> testsPage = new PageImpl<>(new ArrayList<>(user.getTests()), pageable, user.getTests().size());
+    return new PaginationDTO<>(testDetailsDTOMapper.mapList(testsPage.getContent()), testsPage);
   }
 
   @Override

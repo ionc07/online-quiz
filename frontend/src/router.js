@@ -17,10 +17,16 @@ const routes = [
     component: () => import("./views/CreateTest.vue")
   },
   {
-    path: "/tests",
+    path: "/myTests",
     name: "UserTests",
     meta: {requiresAuth: true},
     component: () => import("./views/UserTests.vue")
+  },
+  {
+    path: "/sharedTests",
+    name: "UserSharedTests",
+    meta: {requiresAuth: true},
+    component: () => import("./views/UserSharedTests.vue")
   },
   {
     path: "/userGroups",
@@ -71,7 +77,7 @@ const routes = [
     }
   },
   // otherwise redirect to tests
-  {path: "*", redirect: "/tests"}
+  {path: "*", redirect: "/myTests"}
 ];
 
 const router = new VueRouter({

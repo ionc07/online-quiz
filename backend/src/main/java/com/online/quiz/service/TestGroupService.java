@@ -11,4 +11,8 @@ public interface TestGroupService {
   List<TestGroupDTO> getAllTestGroups();
 
   void deleteTestGroup(Long id);
+
+  void updateTestGroup(TestGroup testGroup);
+
+  void moveTestsToGroup(Long testGroupId, List<Long> testIds);
 }

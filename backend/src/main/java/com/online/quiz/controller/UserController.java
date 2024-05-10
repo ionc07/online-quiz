@@ -1,11 +1,10 @@
 package com.online.quiz.controller;
 
-import com.online.quiz.dto.UserDTO;
+import com.online.quiz.dto.TestsSharedWIthUsersDTO;
 import com.online.quiz.dto.UserResetPasswordDTO;
+import com.online.quiz.dto.UserShortDetailsDTO;
 import com.online.quiz.dto.UserUpdateDTO;
-import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.model.User;
-import com.online.quiz.projection.UserDetails;
 import com.online.quiz.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -14,17 +13,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -35,7 +27,7 @@ public class UserController {
 
   @GetMapping
   @Operation(summary = "Get all users")
-  public ResponseEntity<PaginationDTO<UserDTO>> getAll(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+  public ResponseEntity<UserShortDetailsDTO> getAll(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
     return new ResponseEntity(userService.getAll(pageable), HttpStatus.OK);
   }
 
@@ -45,6 +37,16 @@ public class UserController {
     User user = userService.getCurrentUser();
 
     return new ResponseEntity<>(user, HttpStatus.OK);
+  }
+
+  @GetMapping("/details")
+  public ResponseEntity<UserShortDetailsDTO> getUserShortDetailsByEmail(@RequestParam String email) {
+    return ResponseEntity.ok(userService.getUserByEmail(email));
+  }
+
+  @GetMapping("/by-group")
+  public ResponseEntity<List<UserShortDetailsDTO>> getAllUsersByUserGroup(@RequestParam Long userGroupId) {
+    return ResponseEntity.ok(userService.getAllUsersByUserGroup(userGroupId));
   }
 
   @PostMapping("/password/verification")
@@ -67,6 +69,12 @@ public class UserController {
     userService.update(userUpdateDTO);
 
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PostMapping("/share/tests")
+  public ResponseEntity<?> shareTestsWithUsers(@RequestBody TestsSharedWIthUsersDTO testsSharedWIthUsersDTO) {
+    userService.shareTestsWithUsers(testsSharedWIthUsersDTO);
+    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{id}")

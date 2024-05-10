@@ -1,14 +1,14 @@
 package com.online.quiz.service.impl;
 
-import com.online.quiz.dto.UserDTO;
-import com.online.quiz.dto.UserResetPasswordDTO;
-import com.online.quiz.dto.UserUpdateDTO;
+import com.online.quiz.dto.*;
 import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.exception.UserNotFoundException;
 import com.online.quiz.exception.WrongResetCodeException;
 import com.online.quiz.mail.EmailService;
+import com.online.quiz.model.Test;
 import com.online.quiz.model.User;
 import com.online.quiz.model.mapper.Mapper;
+import com.online.quiz.repository.UserGroupRepository;
 import com.online.quiz.repository.UserRepository;
 import com.online.quiz.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -29,11 +30,15 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
 
+  private final UserGroupRepository userGroupRepository;
+
   private final PasswordEncoder passwordEncoder;
 
   private final EmailService emailService;
 
   private final Mapper<User, UserDTO> userToDtoMapper;
+
+  private final Mapper<User, UserShortDetailsDTO> userShortDetailsDTOMapper;
 
   @Override
   @Transactional
@@ -72,6 +77,21 @@ public class UserServiceImpl implements UserService {
     user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
   }
 
+  @Override
+  public void shareTestsWithUsers(TestsSharedWIthUsersDTO testsSharedWIthUsersDTO) {
+    List<User> users = userRepository.findAllById(testsSharedWIthUsersDTO.getUserIds());
+
+    for (User user : users) {
+      for (Long testId : testsSharedWIthUsersDTO.getTestIds()) {
+        Test test = new Test();
+        test.setId(testId);
+        if (!user.getTests().contains(test)) {
+          user.addTest(test);
+        }
+      }
+    }
+  }
+
   @Transactional(readOnly = true)
   @Override
   public User findUserByEmail(String email) {
@@ -83,6 +103,17 @@ public class UserServiceImpl implements UserService {
   @Transactional(readOnly = true)
   public User getCurrentUser() {
     return userRepository.findUserByEmail(getCurrentUserEmail());
+  }
+
+  @Override
+  public UserShortDetailsDTO getUserByEmail(String email) {
+    return userShortDetailsDTOMapper.map(userRepository.findByEmail(email)
+            .orElseThrow(() -> new UserNotFoundException("Such user with given email doesn't exist!")));
+  }
+
+  @Override
+  public List<UserShortDetailsDTO> getAllUsersByUserGroup(Long userGroupId) {
+    return userShortDetailsDTOMapper.mapList(userGroupRepository.findById(userGroupId).get().getUsers());
   }
 
   @Override

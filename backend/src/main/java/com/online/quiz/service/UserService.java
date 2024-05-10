@@ -1,11 +1,11 @@
 package com.online.quiz.service;
 
-import com.online.quiz.dto.UserDTO;
-import com.online.quiz.dto.UserResetPasswordDTO;
-import com.online.quiz.dto.UserUpdateDTO;
+import com.online.quiz.dto.*;
 import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.model.User;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface UserService {
   void verify(String email);
@@ -14,7 +14,13 @@ public interface UserService {
 
   void update(UserUpdateDTO userUpdateDTO);
 
+  void shareTestsWithUsers(TestsSharedWIthUsersDTO testsSharedWIthUsersDTO);
+
   User getCurrentUser();
+
+  UserShortDetailsDTO getUserByEmail(String email);
+
+  List<UserShortDetailsDTO> getAllUsersByUserGroup(Long userGroupId);
 
   PaginationDTO<UserDTO> getAll(Pageable pageable);
 

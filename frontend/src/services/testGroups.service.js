@@ -14,6 +14,14 @@ class TestGroupsService {
   getAllTestGroups() {
     return axios.get(API_URL);
   }
+
+  updateTestGroup(testGroupData) {
+    return axios.put(API_URL, testGroupData);
+  }
+
+  moveTestsToGroup(testGroupId, testIds) {
+    return axios.put(API_URL + '/moveTestsToGroup' + '?testGroupId=' + testGroupId, testIds);
+  }
 }
 
 export default new TestGroupsService();
