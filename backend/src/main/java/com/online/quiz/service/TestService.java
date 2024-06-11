@@ -1,7 +1,9 @@
 package com.online.quiz.service;
 
+import com.online.quiz.dto.SharedTestDetailsDTO;
 import com.online.quiz.dto.TestDTO;
 import com.online.quiz.dto.TestDetailsDTO;
+import com.online.quiz.dto.TestShortDetails;
 import com.online.quiz.dto.pagination.PaginationDTO;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +17,11 @@ public interface TestService {
 
   PaginationDTO<TestDetailsDTO> getTestsForCurrentUser(Pageable pageable);
 
-  PaginationDTO<TestDetailsDTO> getSharedTestsForCurrentUser(Pageable pageable) throws NotFoundException;
+  PaginationDTO<SharedTestDetailsDTO> getSharedTestsForCurrentUser(Pageable pageable) throws NotFoundException;
 
   TestDTO getTest(Long id);
 
   void deleteTests(List<Long> testIds);
+
+  List<TestShortDetails> getAllTestsShortDetails();
 }

@@ -9,6 +9,7 @@ public class AnswerToDtoMapper extends Mapper<Answer, AnswerDTO> {
   @Override
   public AnswerDTO map(Answer entity) {
     return AnswerDTO.builder()
+            .id(entity.getId())
             .correct(entity.getCorrect())
             .score(entity.getScore())
             .value(entity.getValue())

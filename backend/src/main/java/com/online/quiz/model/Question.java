@@ -19,12 +19,6 @@ public class Question extends AbstractEntity {
 
   private Integer sequence;
 
-  private Integer timeLimit;
-
-  private Boolean waitForTimeLimit;
-
-  private Integer score;
-
   @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
   private List<Answer> answers;
 
@@ -61,30 +55,6 @@ public class Question extends AbstractEntity {
 
   public void setSequence(Integer sequence) {
     this.sequence = sequence;
-  }
-
-  public Integer getTimeLimit() {
-    return timeLimit;
-  }
-
-  public void setTimeLimit(Integer timeLimit) {
-    this.timeLimit = timeLimit;
-  }
-
-  public Boolean getWaitForTimeLimit() {
-    return waitForTimeLimit;
-  }
-
-  public void setWaitForTimeLimit(Boolean waitForTimeLimit) {
-    this.waitForTimeLimit = waitForTimeLimit;
-  }
-
-  public Integer getScore() {
-    return score;
-  }
-
-  public void setScore(Integer score) {
-    this.score = score;
   }
 
   public List<Answer> getAnswers() {

@@ -10,12 +10,6 @@ public class TestSettings extends AbstractEntity {
 
   private LocalDateTime availableTo;
 
-  private Boolean chatEnabled;
-
-  private Integer timeLimit;
-
-  private Integer maxAttempts;
-
   public TestSettings() {
   }
 
@@ -35,31 +29,4 @@ public class TestSettings extends AbstractEntity {
     this.availableTo = availableTo;
   }
 
-  public Boolean isChatEnabled() {
-    return chatEnabled;
-  }
-
-  public void setChatEnabled(Boolean chatEnabled) {
-    this.chatEnabled = chatEnabled;
-  }
-
-  public Integer getTimeLimit() {
-    return timeLimit;
-  }
-
-  public void setTimeLimit(Integer timeLimit) {
-    this.timeLimit = timeLimit;
-  }
-
-  public Integer getMaxAttempts() {
-    return maxAttempts;
-  }
-
-  public void setMaxAttempts(Integer maxAttempts) {
-    this.maxAttempts = maxAttempts;
-  }
-
-  public Boolean getChatEnabled() {
-    return chatEnabled;
-  }
 }

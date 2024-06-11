@@ -14,6 +14,8 @@ public interface TestRepository extends JpaRepository<Test, Long> {
 
   Page<Test> findAllByUserId(Pageable pageable, long userId);
 
+  List<Test> findAllByUserId(long userId);
+
   Test findTestById(Long id);
 
   @Query(value = "select to_char(created_at, 'yyyy-mm-dd') date, count(id) from test group by date order by date limit 7", nativeQuery = true)

@@ -1,8 +1,6 @@
 package com.online.quiz.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class UserResponse extends AbstractEntity {
@@ -10,12 +8,17 @@ public class UserResponse extends AbstractEntity {
   @OneToOne(cascade = CascadeType.ALL)
   private User user;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @ManyToOne
+  @JoinColumn(name = "test_id", nullable = false)
+  private Test test;
+
+  @ManyToOne
+  @JoinColumn(name = "question_id", nullable = false)
+  private Question question;
+
+  @ManyToOne
+  @JoinColumn(name = "answer_id", nullable = false)
   private Answer answer;
-
-  private String value;
-
-  private Integer score;
 
   public UserResponse() {
   }
@@ -36,19 +39,19 @@ public class UserResponse extends AbstractEntity {
     this.answer = answer;
   }
 
-  public String getValue() {
-    return value;
+  public Question getQuestion() {
+    return question;
   }
 
-  public void setValue(String value) {
-    this.value = value;
+  public void setQuestion(Question question) {
+    this.question = question;
   }
 
-  public Integer getScore() {
-    return score;
+  public Test getTest() {
+    return test;
   }
 
-  public void setScore(Integer score) {
-    this.score = score;
+  public void setTest(Test test) {
+    this.test = test;
   }
 }

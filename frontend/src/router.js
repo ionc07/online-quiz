@@ -29,6 +29,12 @@ const routes = [
     component: () => import("./views/UserSharedTests.vue")
   },
   {
+    path: "/testResults",
+    name: "TestResults",
+    meta: {requiresAuth: true},
+    component: () => import("./views/TestResults.vue")
+  },
+  {
     path: "/userGroups",
     name: "User groups",
     meta: {requiresAuth: true},
@@ -75,6 +81,12 @@ const routes = [
     meta: {
       requiresAuth: true,
     }
+  },
+  {
+    path: "/takeTest/:id",
+    name: "Take test",
+    meta: {requiresAuth: true},
+    component: () => import("./views/TestTaking.vue")
   },
   // otherwise redirect to tests
   {path: "*", redirect: "/myTests"}

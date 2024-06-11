@@ -20,7 +20,7 @@ class UserGroupsService {
   }
 
   moveUsersToGroup(userGroupId, userIds) {
-    return axios.put(API_URL + '/moveUsersToGroup' + '?userGroupId=' + userGroupId, userIds);
+    return axios.put(API_URL + '/users' + '?userGroupId=' + userGroupId, userIds);
   }
 }
 

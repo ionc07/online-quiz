@@ -58,6 +58,26 @@ export const test = {
             return Promise.reject(error);
           }
       );
+    },
+    getAllTestsShortDetails({commit}) {
+      return TestService.getAllTestsShortDetails().then(
+          response => {
+            return Promise.resolve(response.data);
+          },
+          error => {
+            return Promise.reject(error);
+          }
+      );
+    },
+    getTestById({commit}, testId) {
+      return TestService.getTestById(testId).then(
+          response => {
+            return Promise.resolve(response.data);
+          },
+          error => {
+            return Promise.reject(error);
+          }
+      );
     }
   },
   mutations: {

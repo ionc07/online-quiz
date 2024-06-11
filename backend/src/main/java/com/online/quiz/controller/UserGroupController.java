@@ -27,19 +27,19 @@ public class UserGroupController {
   }
 
   @PutMapping
-  public ResponseEntity updateUserGroup(@RequestBody UserGroup userGroup) {
+  public ResponseEntity<?> updateUserGroup(@RequestBody UserGroup userGroup) {
     userGroupService.updateUserGroup(userGroup);
     return ResponseEntity.ok().build();
   }
 
-  @PutMapping("/moveUsersToGroup")
-  public ResponseEntity moveUsersToGroup(@RequestParam Long userGroupId, @RequestBody List<Long> testIds) {
+  @PutMapping("/users")
+  public ResponseEntity<?> moveUsersToGroup(@RequestParam Long userGroupId, @RequestBody List<Long> testIds) {
     userGroupService.moveUsersToGroup(userGroupId, testIds);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping
-  public ResponseEntity deleteUserGroup(@RequestParam Long userGroupId) {
+  public ResponseEntity<?> deleteUserGroup(@RequestParam Long userGroupId) {
     userGroupService.deleteUserGroup(userGroupId);
     return ResponseEntity.noContent().build();
   }

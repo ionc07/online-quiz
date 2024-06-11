@@ -3,6 +3,36 @@
     <div>
       <v-row class="mb-1 mt-1">
         <v-col>
+          <v-dialog v-model="shareDialog" max-width="500">
+            <v-card>
+              <v-card-title>
+                Share Test Group
+                <v-spacer></v-spacer>
+                <v-radio-group
+                    v-model="shareByOption"
+                    row
+                >
+                  <v-radio
+                      label="Email"
+                      value="email"
+                  ></v-radio>
+                  <v-radio
+                      label="User group"
+                      value="user group"
+                  ></v-radio>
+                </v-radio-group>
+              </v-card-title>
+
+              <v-card-text>
+                <v-text-field v-if="shareByOption === 'email'" v-model="email" label="User Email"></v-text-field>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="shareSelectedTests">Share</v-btn>
+                <v-btn color="blue darken-1" text @click="shareDialog = false; email='';">Close</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-dialog
               v-model="deleteDialog"
               persistent
@@ -56,7 +86,7 @@
             </v-list>
           </v-menu>
 
-          <v-btn color="primary" class="ml-4" :disabled="selectedTests.length === 0">
+          <v-btn @click="shareDialog = true" color="primary" class="ml-4" :disabled="selectedTests.length === 0">
             Share
             <v-icon dense right color="white">mdi-share</v-icon>
           </v-btn>
@@ -152,6 +182,10 @@ export default {
   name: "UserTests",
   data() {
     return {
+      shareByOption: 'email',
+      userGroups: null,
+      shareDialog: false,
+      email: '',
       testGroups: [],
       movedToGroupSuccess: false,
       data: {},
@@ -208,9 +242,16 @@ export default {
         this.loading = false
       })
 
+    },
+    fetchTestGroups() {
       this.$store.dispatch("testGroup/getAllTestGroups").then(data => {
         console.log(data);
         this.testGroups = data;
+      });
+    },
+    fetchUserGroups() {
+      this.$store.dispatch("userGroup/getAllUserGroups").then(data => {
+        this.userGroups = data;
       });
     },
     deleteSelectedTests() {
@@ -235,6 +276,37 @@ export default {
             });
       }
     },
+    shareSelectedTests() {
+      console.log('Share the selected tests to email[' + this.email + '].');
+      console.log(this.selectedTests);
+
+      this.$store.dispatch("user/getUserByEmail", this.email).then((userDetails) => {
+        console.log(userDetails);
+        this.$store.dispatch('user/shareTestsWithUsers', {
+          userIds: [userDetails.id],
+          testIds: this.selectedTests.map((test) => {
+            return test.id
+          })
+        }).then(() => {
+              this.addedToGroupSuccess = true;
+              this.addUserToGroupLoading = false;
+
+              this.fetchUserGroups();
+            }
+        ).catch(() => {
+          this.addUserToGroupFailedMessage = "Failed to add user to the group!";
+          this.addUserToGroupFailed = true;
+          this.addUserToGroupLoading = false;
+        });
+      }).catch(error => {
+        console.log(error);
+        console.log(error.response)
+        this.addUserToGroupFailedMessage = "Didn't find an user with the provided email!";
+        this.addUserToGroupFailed = true;
+        this.addUserToGroupLoading = false;
+      });
+
+    },
     moveSelectedToGroup(testGroup) {
       console.log("Moving selected tests");
       console.log(this.selectedTests);
@@ -249,6 +321,10 @@ export default {
       )
     }
   },
+  mounted() {
+    this.fetchTestGroups();
+    this.fetchUserGroups();
+  }
 }
 </script>
 

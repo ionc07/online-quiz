@@ -1,156 +1,146 @@
 <template>
   <v-container>
-    <div>
-      Shared tests
-      <v-row class="mb-1 mt-1">
-        <v-col>
-          <v-dialog
-              v-model="deleteDialog"
-              persistent
-              max-width="290"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on" color="error"
-                     :disabled="selectedTests.length === 0">Delete
-                <v-icon dense right color="white">mdi-delete</v-icon>
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title class="text-h6">
-                Are you sure you want to delete the selected tests?
-              </v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                    color="red"
-                    text
-                    @click="deleteDialog = false"
-                >
-                  Cancel
-                </v-btn>
-                <v-btn
-                    color="error"
-                    @click="deleteSelectedTests"
-                >
-                  Yes
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on"
-                     color="success" class="ml-4" :disabled="selectedTests.length === 0">Move
-                to Group
-                <v-icon dense right color="white">mdi-file-document-arrow-right-outline</v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                  class="test-group-list-item"
-                  v-for="(testGroup, index) in testGroups"
-                  :key="index"
-                  @click="moveSelectedToGroup(testGroup)"
+    <v-row class="mb-1 mt-1">
+      <v-col>
+        <v-dialog
+            v-model="deleteDialog"
+            persistent
+            max-width="290"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on" color="error"
+                   :disabled="selectedTests.length === 0">Delete
+              <v-icon dense right color="white">mdi-delete</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title class="text-h6">
+              Are you sure you want to delete the selected tests?
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="red"
+                  text
+                  @click="deleteDialog = false"
               >
-                <v-list-item-title>{{ testGroup.name }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+                Cancel
+              </v-btn>
+              <v-btn
+                  color="error"
+                  @click="deleteSelectedTests"
+              >
+                Yes
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
-          <v-btn color="primary" class="ml-4" :disabled="selectedTests.length === 0">
-            Share
-            <v-icon dense right color="white">mdi-share</v-icon>
-          </v-btn>
+      </v-col>
+    </v-row>
+    <v-data-table
+        :headers="headers"
+        :items="data.content"
+        item-key="testDetails.id"
+        :options.sync="options"
+        :server-items-length="data.totalElements"
+        :loading="loading"
+        loading-text="Loading... Please wait"
+        show-select
+        v-model="selectedTests"
+        class="elevation-1"
+    >
+      <template v-slot:item.testDetails.available="{ item }">
 
-        </v-col>
-      </v-row>
-      <v-data-table
-          :headers="headers"
-          :items="data.content"
-          :options.sync="options"
-          :server-items-length="data.totalElements"
-          :loading="loading"
-          loading-text="Loading... Please wait"
-          show-select
-          v-model="selectedTests"
-          class="elevation-1"
-      >
-        <template v-slot:item.available="{ item }">
+        <v-icon v-if="item.testDetails.available" color="success">mdi-check-circle-outline</v-icon>
+        <v-icon v-if="!item.testDetails.available" color="error">mdi-close-circle-outline</v-icon>
+      </template>
 
-          <v-icon v-if="item.available" color="success">mdi-check-circle-outline</v-icon>
-          <v-icon v-if="!item.available" color="error">mdi-close-circle-outline</v-icon>
-        </template>
-      </v-data-table>
-      <v-snackbar
-          v-model="deletionSuccess"
-          :timeout="3000"
-          centered
-          top
-          color="success"
-          elevation="24"
-          :multi-line="true"
-      >
-        {{ "The selected tests were successfully deleted!" }}
-
-        <template v-slot:action="{ attrs }">
+      <template v-slot:item.takeTest="{item}">
+        <div v-if="!item.testResult">
           <v-btn
-              text
-              v-bind="attrs"
-              @click="deletionSuccess = false"
+              outlined
+              rounded
+              color="success"
+              @click="goToTestTakingPage(item.testDetails.id)"
           >
-            Close
+            <v-icon color="success">mdi-play</v-icon>
           </v-btn>
-        </template>
-      </v-snackbar>
-      <v-snackbar
-          v-model="deletionFailure"
-          :timeout="3000"
-          centered
-          top
-          color="error"
-          elevation="24"
-          :multi-line="true"
-      >
-        {{ "Failed to delete the selected tests!" }}
+        </div>
+        <div v-else>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  outlined
+                  rounded
+                  color="error"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="openTestResultDialog(item.testResult)"
+              >
+                <v-icon color="error">mdi-information-slab-circle</v-icon>
+              </v-btn>
+            </template>
+            <span>Taken at: {{ item.testResult.takenAt }}	</span>
+          </v-tooltip>
 
-        <template v-slot:action="{ attrs }">
-          <v-btn
-              text
-              v-bind="attrs"
-              @click="deletionFailure = false"
-          >
-            Close
-          </v-btn>
-        </template>
-      </v-snackbar>
-      <v-snackbar
-          v-model="movedToGroupSuccess"
-          :timeout="3000"
-          centered
-          top
-          color="success"
-          elevation="24"
-          :multi-line="true"
-      >
-        {{ "The selected tests were successfully moved to the test group!" }}
+        </div>
+      </template>
+    </v-data-table>
+    <v-snackbar
+        v-model="deletionSuccess"
+        :timeout="3000"
+        centered
+        top
+        color="success"
+        elevation="24"
+        :multi-line="true"
+    >
+      {{ "The selected tests were successfully deleted!" }}
 
-        <template v-slot:action="{ attrs }">
-          <v-btn
-              text
-              v-bind="attrs"
-              @click="movedToGroupSuccess = false"
-          >
-            Close
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+            text
+            v-bind="attrs"
+            @click="deletionSuccess = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar
+        v-model="deletionFailure"
+        :timeout="3000"
+        centered
+        top
+        color="error"
+        elevation="24"
+        :multi-line="true"
+    >
+      {{ "Failed to delete the selected tests!" }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+            text
+            v-bind="attrs"
+            @click="deletionFailure = false"
+        >
+          Close
+        </v-btn>
+      </template>
+
+    </v-snackbar>
+    <TestResultDialog :testResultData="testResultData" :show="showTestResultDialog"
+                      @closeDialog="closeTestResultDialog"/>
   </v-container>
 </template>
 
 <script>
+import TestResultDialog from "@/components/modal/TestResultDialog.vue";
+
 export default {
   name: "UserTests",
+  components: {TestResultDialog},
   data() {
     return {
       testGroups: [],
@@ -163,19 +153,22 @@ export default {
       headers: [
         {
           text: 'Title',
-          value: 'title',
+          value: 'testDetails.title',
           class: 'my-header-style'
         },
-        {text: 'Test creator', value: 'creatorName'},
-        {text: 'Is available', value: 'available'},
-        {text: 'Available from date', value: 'availableFrom'},
-        {text: 'Available to date', value: 'availableTo'},
-        {text: 'Test group', value: 'testGroupName'},
+        {text: 'Test creator', value: 'testDetails.creatorName'},
+        {text: 'Is available', value: 'testDetails.available'},
+        {text: 'Available from date', value: 'testDetails.availableFrom'},
+        {text: 'Available to date', value: 'testDetails.availableTo'},
+        {text: 'Test group', value: 'testDetails.testGroupName'},
+        {text: 'Take test', value: 'takeTest'},
       ],
       selectedTests: [],
       deleteDialog: false,
       deletionSuccess: false,
       deletionFailure: false,
+      showTestResultDialog: false,
+      testResultData: {}
     }
   },
   watch: {
@@ -187,12 +180,6 @@ export default {
     },
   },
   methods: {
-    switchToGridView() {
-      this.selectedView = 'grid'; // Set selected view to grid
-    },
-    switchToListView() {
-      this.selectedView = 'list'; // Set selected view to list
-    },
     getDataFromApi() {
       console.log(this.options)
       const pageParam = `?size=${this.options.itemsPerPage}&page=${this.options.page - 1}`;
@@ -214,10 +201,18 @@ export default {
         this.testGroups = data;
       });
     },
+    openTestResultDialog(testResult) {
+      this.testResultData = testResult;
+      this.showTestResultDialog = true;
+    },
+    closeTestResultDialog() {
+      this.showTestResultDialog = false;
+      this.testResultData = {};
+    },
     deleteSelectedTests() {
+      console.log("Deleting selected tests");
+      console.log(this.selectedTests);
       if (this.selectedTests.length > 0) {
-        console.log("Deleting selected tests");
-        console.log(this.selectedTests);
         this.$store.dispatch('test/deleteTests', this.selectedTests.map((test) => {
           return test.id
         }).join(','))
@@ -235,19 +230,10 @@ export default {
               this.deletionFailure = true;
             });
       }
+      this.deleteDialog = false;
     },
-    moveSelectedToGroup(testGroup) {
-      console.log("Moving selected tests");
-      console.log(this.selectedTests);
-      this.$store.dispatch('testGroup/moveTestsToGroup', {
-        testGroupId: testGroup.id, testIds: this.selectedTests.map((test) => {
-          return test.id
-        })
-      }).then(() => {
-            this.movedToGroupSuccess = true;
-            this.getDataFromApi();
-          }
-      )
+    goToTestTakingPage(testId) {
+      this.$router.push({name: 'Take test', params: {id: testId}});
     }
   },
 }

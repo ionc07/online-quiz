@@ -1,16 +1,13 @@
 package com.online.quiz.model.mapper;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class Mapper<E, D> {
 
-  public DateTimeFormatter formatter;
 
   public Mapper() {
-    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
   }
 
   public abstract D map(E entity);
@@ -27,11 +24,4 @@ public abstract class Mapper<E, D> {
             .collect(Collectors.toSet());
   }
 
-  public DateTimeFormatter getFormatter() {
-    return formatter;
-  }
-
-  public void setFormatter(DateTimeFormatter formatter) {
-    this.formatter = formatter;
-  }
 }

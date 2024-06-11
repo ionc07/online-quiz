@@ -2,6 +2,7 @@ package com.online.quiz.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,11 +29,23 @@ public class Test extends AbstractEntity {
           inverseJoinColumns = @JoinColumn(name = "test_group_id"))
   private TestGroup testGroup;
 
+  @ManyToMany
+  @JoinTable(
+          name = "user_shared_test",
+          joinColumns = @JoinColumn(name = "test_id"),
+          inverseJoinColumns = @JoinColumn(name = "user_id")
+  )
+  private List<User> users = new ArrayList<>();
+
   private Boolean available;
 
   private LocalDateTime createdAt;
 
   public Test() {
+  }
+
+  public Test(Long id) {
+    super.setId(id);
   }
 
   public String getTitle() {
@@ -85,6 +98,14 @@ public class Test extends AbstractEntity {
 
   public void setQuestions(List<Question> questions) {
     this.questions = questions;
+  }
+
+  public List<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(List<User> users) {
+    this.users = users;
   }
 
   public LocalDateTime getCreatedAt() {

@@ -15,6 +15,17 @@ export const user = {
           }
       );
     },
+
+    shareTestsWithUsers({commit}, data) {
+      return UserService.shareTestsWithUsers(data).then(response => {
+            return Promise.resolve(response.data);
+          },
+          error => {
+            return Promise.reject(error);
+          }
+      );
+    }
+
   },
   mutations: {}
 };

@@ -23,6 +23,14 @@ class TestService {
   getAllTests() {
     return axios.get(API_URL);
   }
+
+  getAllTestsShortDetails() {
+    return axios.get(API_URL + "/short-details");
+  }
+
+  getTestById(testId) {
+    return axios.get(API_URL + '/' + testId);
+  }
 }
 
 export default new TestService();

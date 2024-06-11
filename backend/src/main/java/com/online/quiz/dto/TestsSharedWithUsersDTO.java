@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TestsSharedWIthUsersDTO {
+public class TestsSharedWithUsersDTO {
   private List<Long> userIds;
   private List<Long> testIds;
 }

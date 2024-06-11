@@ -78,11 +78,12 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void shareTestsWithUsers(TestsSharedWIthUsersDTO testsSharedWIthUsersDTO) {
-    List<User> users = userRepository.findAllById(testsSharedWIthUsersDTO.getUserIds());
+  @Transactional
+  public void shareTestsWithUsers(TestsSharedWithUsersDTO testsSharedWithUsersDTO) {
+    List<User> users = userRepository.findAllById(testsSharedWithUsersDTO.getUserIds());
 
     for (User user : users) {
-      for (Long testId : testsSharedWIthUsersDTO.getTestIds()) {
+      for (Long testId : testsSharedWithUsersDTO.getTestIds()) {
         Test test = new Test();
         test.setId(testId);
         if (!user.getTests().contains(test)) {

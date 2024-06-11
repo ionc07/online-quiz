@@ -20,7 +20,7 @@ class TestGroupsService {
   }
 
   moveTestsToGroup(testGroupId, testIds) {
-    return axios.put(API_URL + '/moveTestsToGroup' + '?testGroupId=' + testGroupId, testIds);
+    return axios.put(API_URL + '/tests' + '?testGroupId=' + testGroupId, testIds);
   }
 }
 

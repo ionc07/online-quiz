@@ -14,7 +14,7 @@ public interface UserService {
 
   void update(UserUpdateDTO userUpdateDTO);
 
-  void shareTestsWithUsers(TestsSharedWIthUsersDTO testsSharedWIthUsersDTO);
+  void shareTestsWithUsers(TestsSharedWithUsersDTO testsSharedWithUsersDTO);
 
   User getCurrentUser();
 

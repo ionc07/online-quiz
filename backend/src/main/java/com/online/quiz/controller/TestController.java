@@ -1,7 +1,9 @@
 package com.online.quiz.controller;
 
+import com.online.quiz.dto.SharedTestDetailsDTO;
 import com.online.quiz.dto.TestDTO;
 import com.online.quiz.dto.TestDetailsDTO;
+import com.online.quiz.dto.TestShortDetails;
 import com.online.quiz.dto.pagination.PaginationDTO;
 import com.online.quiz.service.TestService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +38,11 @@ public class TestController {
     return new ResponseEntity<>(testService.getAllTests(pageable), HttpStatus.OK);
   }
 
+  @GetMapping("/short-details")
+  public ResponseEntity<List<TestShortDetails>> getAllTestsShortDetails(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    return new ResponseEntity<>(testService.getAllTestsShortDetails(), HttpStatus.OK);
+  }
+
   @GetMapping("/currentUser")
   @Operation(summary = "Returns all tests by current user")
   public ResponseEntity<PaginationDTO<TestDetailsDTO>> getTestsForCurrentUser(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -43,7 +50,7 @@ public class TestController {
   }
 
   @GetMapping("/currentUser/shared")
-  public ResponseEntity<PaginationDTO<TestDetailsDTO>> getSharedTestsForCurrentUser(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) throws NotFoundException {
+  public ResponseEntity<PaginationDTO<SharedTestDetailsDTO>> getSharedTestsForCurrentUser(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) throws NotFoundException {
     return new ResponseEntity<>(testService.getSharedTestsForCurrentUser(pageable), HttpStatus.OK);
   }
 
@@ -51,6 +58,7 @@ public class TestController {
   public ResponseEntity<TestDTO> getTest(@PathVariable Long id) {
     return new ResponseEntity<>(testService.getTest(id), HttpStatus.OK);
   }
+
 
   @DeleteMapping
   public ResponseEntity<?> delete(@RequestParam List<Long> testIds) {

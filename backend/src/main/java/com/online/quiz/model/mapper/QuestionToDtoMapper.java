@@ -14,13 +14,9 @@ public class QuestionToDtoMapper extends Mapper<Question, QuestionDTO> {
   @Override
   public QuestionDTO map(Question entity) {
     return QuestionDTO.builder()
+            .id(entity.getId())
             .answers(answerToDtoMapper.mapList(entity.getAnswers()))
             .answerType(entity.getAnswerType().getName())
-            .score(entity.getScore())
-            .sequence(entity.getSequence())
-            .timeLimit(entity.getTimeLimit())
-            .value(entity.getValue())
-            .waitForTimeLimit(entity.getWaitForTimeLimit())
             .build();
   }
 }

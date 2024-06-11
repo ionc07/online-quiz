@@ -8,7 +8,7 @@
         :mini-variant="$vuetify.breakpoint.smAndDown || $store.state.nav.miniNavBar"
         width="224"
     >
-      <v-list-item two-line class="logo">
+      <v-list-item two-line class="logo ml-5">
         <v-img max-width="40px" src="@/assets/quiz-logo.png"></v-img>
 
       </v-list-item>
@@ -40,7 +40,7 @@
               :value="false"
           >
             <template v-slot:activator>
-                <v-list-item-title class="list-group-text">{{link.text}}</v-list-item-title>
+              <v-list-item-title class="list-group-text">{{ link.text }}</v-list-item-title>
             </template>
 
             <v-list-item
@@ -82,6 +82,10 @@ export default {
               text: 'Shared tests',
               to: '/sharedTests',
             },
+            {
+              text: 'Test results',
+              to: '/testResults',
+            },
           ]
         },
         {
@@ -94,7 +98,6 @@ export default {
           text: "Test groups",
           to: "/testGroups"
         },
-        {icon: "mdi-account", text: "Account", to: "/account"},
 
       ],
       adminItems: [
@@ -151,7 +154,7 @@ nav {
   color: #212121 !important;
 }
 
-.v-list-group__items a{
+.v-list-group__items a {
   padding-left: 30px !important;
 }
 

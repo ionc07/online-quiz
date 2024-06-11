@@ -330,7 +330,7 @@ export default {
       })
     },
     updateUserGroup() {
-      this.$store.dispatch("userGroup/updateUserGroup", this.updatedTestGroup).then(() => {
+      this.$store.dispatch("userGroup/updateUserGroup", this.updatedUserGroup).then(() => {
         this.fetchUserGroups();
       })
       this.updateUserGroupDialog = false;

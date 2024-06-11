@@ -3,18 +3,32 @@
     <v-row class="mt-1">
       <v-col>
         <v-dialog v-model="shareDialog" max-width="500">
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">Share Test Group</v-btn>
-          </template>
           <v-card>
             <v-card-title>
               Share Test Group
+              <v-spacer></v-spacer>
+              <v-radio-group
+                  v-model="shareByOption"
+                  row
+              >
+                <v-radio
+                    label="Email"
+                    value="email"
+                ></v-radio>
+                <v-radio
+                    label="User group"
+                    value="user group"
+                ></v-radio>
+              </v-radio-group>
             </v-card-title>
+
             <v-card-text>
-              <v-text-field v-model="email" label="User Email"></v-text-field>
-              <v-select v-model="userGroup" :items="userGroups" label="User Group"></v-select>
+              <v-text-field v-if="shareByOption === 'email'" v-model="email" label="User Email"></v-text-field>
+              <v-select v-else v-model="userGroupId" item-text="name" item-value="id" :items="userGroups"
+                        label="User Group"></v-select>
             </v-card-text>
             <v-card-actions>
+              <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="shareTestGroup">Share</v-btn>
               <v-btn color="blue darken-1" text @click="shareDialog = false; email='';userGroup=null">Close</v-btn>
             </v-card-actions>
@@ -95,7 +109,7 @@
 
               </v-row>
               <v-row justify="center">
-                <v-card-text v-if="updatedTestGroup.tests.length === 0">No tests have been addet yet to this test
+                <v-card-text v-if="updatedTestGroup.tests.length === 0">No tests have been added yet to this test
                   group
                 </v-card-text>
                 <v-simple-table v-else height="300px">
@@ -202,6 +216,7 @@
                 <v-btn
                     rounded
                     color="primary"
+                    @click="openShareDialog(testGroupData.id)"
                 >
                   Share
                   <v-icon color="white">mdi-share</v-icon>
@@ -225,6 +240,8 @@
 export default {
   data() {
     return {
+      shareByOption: 'email',
+      sharingTestGroupId: null,
       updatedTestGroup: {tests: []},
       updateTestGroupDialog: null,
       deleteDialog: false,
@@ -236,7 +253,8 @@ export default {
       shareDialog: false,
       email: '',
       userGroup: null,
-      userGroups: ['User Group 1', 'User Group 2', 'User Group 3'] // Example user groups
+      userGroupId: null,
+      userGroups: [] // Example user groups
     };
   },
   methods: {
@@ -247,6 +265,11 @@ export default {
         this.data = data;
         this.loading = false
       });
+    },
+    fetchUserGroups() {
+      this.$store.dispatch("userGroup/getAllUserGroups").then(data => {
+        this.userGroups = data;
+      })
     },
     createTestGroup() {
       console.log(this.$store)
@@ -264,11 +287,15 @@ export default {
       })
       this.updateTestGroupDialog = false;
     },
+    openShareDialog(testGroupId) {
+      this.sharingTestGroupId = testGroupId;
+      this.shareDialog = true;
+    },
     shareTestGroup() {
       // Implement logic to share test group with user by email or user group
       console.log('Sharing Test Group');
       console.log('Email:', this.email);
-      console.log('User Group:', this.userGroup);
+      console.log('User Group:', this.userGroupId);
 
 
       // Reset fields and close dialog
@@ -286,6 +313,7 @@ export default {
   },
   mounted() {
     this.fetchTestGroups();
+    this.fetchUserGroups();
   }
 };
 </script>

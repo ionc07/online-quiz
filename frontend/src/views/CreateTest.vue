@@ -123,7 +123,7 @@
           <v-card-text>
             <!-- Available from date time-->
             <v-row>
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-menu
                     v-model="availableFromDateMenu"
                     :close-on-content-click="false"
@@ -148,7 +148,7 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-menu
                     ref="menu"
                     v-model="availableFromTimeMenu"
@@ -181,7 +181,7 @@
             </v-row>
             <!-- Available to date time-->
             <v-row>
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-menu
                     v-model="availableToDateMenu"
                     :close-on-content-click="false"
@@ -206,7 +206,7 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-menu
                     ref="menu"
                     v-model="availableToTimeMenu"
@@ -284,6 +284,27 @@
         </v-btn>
       </template>
     </v-snackbar>
+    <v-snackbar
+        v-model="invalidSubmit"
+        :timeout="3000"
+        centered
+        top
+        color="error"
+        elevation="24"
+        :multi-line="true"
+    >
+      {{ invalidSubmitCause }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+            text
+            v-bind="attrs"
+            @click="creationFailure = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -298,6 +319,8 @@ export default {
       creationSuccess: false,
       creationFailure: false,
       creationLoading: false,
+      invalidSubmit: false,
+      invalidSubmitCause: "",
       quiz: {
         title: "",
         description: null,
@@ -341,6 +364,21 @@ export default {
       }
     },
     addQuestion() {
+      if (this.newQuestion.answers.length < 2) {
+        this.invalidSubmit = true;
+        this.invalidSubmitCause = "The question doesn't have enough answers!";
+        return;
+      }
+      if (this.newQuestion.answers.find(answer => answer.value === '')) {
+        this.invalidSubmit = true;
+        this.invalidSubmitCause = "An answer has invalid value!!";
+        return;
+      }
+      if (!this.newQuestion.answers.find(answer => answer.correct === true)) {
+        this.invalidSubmit = true;
+        this.invalidSubmitCause = "The question doesn't have a correct answer!";
+        return;
+      }
       if (this.newQuestion.value) {
         this.quiz.questions.push({...this.newQuestion, sequence: this.quiz.questions.length});
         this.resetForm();
@@ -391,18 +429,12 @@ export default {
       };
       this.editingQuestionIndex = null;
     },
-    goToSettings() {
-      this.$router.push({name: "settings"});
-    },
     addAnswer() {
       console.log(this.newQuestion);
       this.newQuestion.answers.push({value: "", correct: false, answerType: this.newQuestion.answerType});
     },
     removeAnswer(index) {
       this.newQuestion.answers.splice(index, 1);
-    },
-    setAvailableFromTime(time) {
-      this.availableFromTime = time;
     },
     clearTestFormAndQuestions() {
       this.quiz.title = null;

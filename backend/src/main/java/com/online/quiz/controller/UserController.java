@@ -1,6 +1,6 @@
 package com.online.quiz.controller;
 
-import com.online.quiz.dto.TestsSharedWIthUsersDTO;
+import com.online.quiz.dto.TestsSharedWithUsersDTO;
 import com.online.quiz.dto.UserResetPasswordDTO;
 import com.online.quiz.dto.UserShortDetailsDTO;
 import com.online.quiz.dto.UserUpdateDTO;
@@ -71,9 +71,9 @@ public class UserController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @PostMapping("/share/tests")
-  public ResponseEntity<?> shareTestsWithUsers(@RequestBody TestsSharedWIthUsersDTO testsSharedWIthUsersDTO) {
-    userService.shareTestsWithUsers(testsSharedWIthUsersDTO);
+  @PutMapping("/share/tests")
+  public ResponseEntity<?> shareTestsWithUsers(@RequestBody TestsSharedWithUsersDTO testsSharedWithUsersDTO) {
+    userService.shareTestsWithUsers(testsSharedWithUsersDTO);
     return ResponseEntity.ok().build();
   }
 

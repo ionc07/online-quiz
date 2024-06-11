@@ -2,6 +2,7 @@ package com.online.quiz.model.mapper;
 
 import com.online.quiz.dto.UserDTO;
 import com.online.quiz.model.User;
+import com.online.quiz.util.DateTimeUtil;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +14,7 @@ public class UserToDtoMapper extends Mapper<User, UserDTO> {
             .firstName(entity.getFirstName())
             .lastName(entity.getLastName())
             .email(entity.getEmail())
-            .createdAt(entity.getCreatedAt().format(formatter))
+            .createdAt(DateTimeUtil.formatShortDateTime(entity.getCreatedAt()))
             .role(entity.getRole().getName())
             .build();
   }

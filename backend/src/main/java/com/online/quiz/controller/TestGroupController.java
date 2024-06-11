@@ -26,20 +26,20 @@ public class TestGroupController {
     return ResponseEntity.ok(testGroupService.createTestGroup(testGroup));
   }
 
-  @PutMapping("/moveTestsToGroup")
-  public ResponseEntity moveTestsToGroup(@RequestParam Long testGroupId, @RequestBody List<Long> testIds) {
+  @PutMapping("/tests")
+  public ResponseEntity<?> moveTestsToGroup(@RequestParam Long testGroupId, @RequestBody List<Long> testIds) {
     testGroupService.moveTestsToGroup(testGroupId, testIds);
     return ResponseEntity.ok().build();
   }
 
   @PutMapping
-  public ResponseEntity updateTestGroup(@RequestBody TestGroup testGroup) {
+  public ResponseEntity<?> updateTestGroup(@RequestBody TestGroup testGroup) {
     testGroupService.updateTestGroup(testGroup);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping
-  public ResponseEntity deleteTestGroup(@RequestParam Long testGroupId) {
+  public ResponseEntity<?> deleteTestGroup(@RequestParam Long testGroupId) {
     testGroupService.deleteTestGroup(testGroupId);
     return ResponseEntity.noContent().build();
   }
