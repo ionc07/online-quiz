@@ -59,7 +59,6 @@ public class TestController {
     return new ResponseEntity<>(testService.getTest(id), HttpStatus.OK);
   }
 
-
   @DeleteMapping
   public ResponseEntity<?> delete(@RequestParam List<Long> testIds) {
     testService.deleteTests(testIds);

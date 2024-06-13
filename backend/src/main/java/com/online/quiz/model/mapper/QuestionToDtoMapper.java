@@ -17,6 +17,7 @@ public class QuestionToDtoMapper extends Mapper<Question, QuestionDTO> {
             .id(entity.getId())
             .answers(answerToDtoMapper.mapList(entity.getAnswers()))
             .answerType(entity.getAnswerType().getName())
+            .value(entity.getValue())
             .build();
   }
 }

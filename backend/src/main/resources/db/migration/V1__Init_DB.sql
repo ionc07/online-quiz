@@ -13,8 +13,7 @@ CREATE TABLE users (id BIGSERIAL PRIMARY KEY,
 
 
 CREATE TABLE test_settings (id BIGSERIAL PRIMARY KEY,
-                            available_from timestamp, available_to timestamp, chat_enabled boolean DEFAULT FALSE,
-                            time_limit integer, max_attempts integer DEFAULT 1);
+                            available_from timestamp, available_to timestamp);
 
 
 CREATE TABLE test (id BIGSERIAL PRIMARY KEY,
@@ -38,9 +37,9 @@ CREATE TABLE answer_type (id serial PRIMARY KEY,
 CREATE TABLE question (id BIGSERIAL PRIMARY KEY,
                        test_id bigint CONSTRAINT question_test_fk REFERENCES test,
                        value text NOT NULL,
-                       SEQUENCE integer NOT NULL,
-                       time_limit integer, wait_for_time_limit boolean DEFAULT FALSE,
-                       score integer, answer_type_id integer NOT NULL CONSTRAINT "question_answerType_fk" REFERENCES answer_type);
+                       sequence integer NOT NULL,
+                       score integer,
+                       answer_type_id integer NOT NULL CONSTRAINT "question_answerType_fk" REFERENCES answer_type);
 
 
 CREATE TABLE answer (id BIGSERIAL PRIMARY KEY,

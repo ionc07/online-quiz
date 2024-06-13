@@ -227,7 +227,8 @@ export default {
       this.selectedView = 'list'; // Set selected view to list
     },
     getDataFromApi() {
-      console.log(this.options)
+      console.log(this.options);
+      this.selectedTests = [];
       const pageParam = `?size=${this.options.itemsPerPage}&page=${this.options.page - 1}`;
       let sortParam = "";
 

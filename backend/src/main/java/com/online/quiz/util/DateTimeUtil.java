@@ -7,7 +7,7 @@ public class DateTimeUtil {
 
   private static final DateTimeFormatter MEDIUM_DATE_TIME = DateTimeFormatter.ofPattern("MMM d, yyyy 'at' h:mm");
   private static final DateTimeFormatter SHORT_DATE_TIME = DateTimeFormatter.ofPattern("d/M/yyyy h:mm");
-  private static final DateTimeFormatter DEFAULT_DATE_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+  private static final DateTimeFormatter DEFAULT_DATE_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
   public static String formatMediumDateTime(LocalDateTime dateTime) {
     return dateTime.format(MEDIUM_DATE_TIME);

@@ -82,13 +82,13 @@ public class TestServiceImpl implements TestService {
       question.setAnswerType(answerType);
       question.setValue(questionDTO.getValue());
       question.setTest(test);
-
+      question.setSequence(questionDTO.getSequence());
       questionRepository.save(question);
 
       // Answers of a question mapping
       for (AnswerDTO answerDTO : questionDTO.getAnswers()) {
         Answer answer = new Answer();
-        answer.setScore(answerDTO.getScore());
+        answer.setScore(answerDTO.getScore() != null ? answerDTO.getScore() : 0);
         answer.setValue(answerDTO.getValue());
         answer.setCorrect(answerDTO.getCorrect());
 

@@ -342,7 +342,7 @@ export default {
         answerType: 'radio', // Default answer type
       },
       editingQuestionIndex: null,
-      answerTypes: ['radio', 'dropdown', 'truefalse', 'checkbox'],
+      answerTypes: ['radio', 'dropdown', 'checkbox'],
       menu: false,
       modal: false,
       availableFromDateMenu: false,

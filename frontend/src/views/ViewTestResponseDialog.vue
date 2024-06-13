@@ -23,7 +23,7 @@
         <v-col>
           <v-card>
             <v-card-title>
-              <span class="question-text">{{ question.sequence + 1 }}. {{ question.value }}</span>
+              <span class="question-text">{{ index + 1 }}. {{ question.value }}</span>
               <v-chip color="info" text-color="white" class="ml-2">{{ question.answerType }}</v-chip>
             </v-card-title>
             <v-card-text>
